@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme{
+  --dark: #060C0F;
+  --light: #FFFFFF;
+  --accent: #DD635A;
+}

@@ -1,0 +1,49 @@
+{
+  "home": {
+    "title1": "Your dreams,",
+    "title2": "our creations",
+    "description1": "At Custom Steel, we combine craftsmanship with modern technology to create durable structures tailored to individual needs. From design to installation – ",
+    "description2": "we take care of every stage of the process.",
+    "button": "Contact us!",
+
+    "cards": {
+      "1": {
+        "title": "Precision and quality craftsmanship",
+        "description": "We use modern technologies and proven methods to deliver durable, sturdy, and aesthetically pleasing products."
+      },
+      "2": {
+        "title": "Individual approach to projects",
+        "description": "We don’t offer off-the-shelf solutions. We tailor our work to your needs, space, and budget, creating custom-made projects."
+      },
+      "3": {
+        "title": "Trusted partner in realization",
+        "description": "From the first contact to the final installation – you can count on our support, timeliness, and full commitment."
+      }
+    },
+
+    "about": {
+      "title": "What do we do?",
+      "description": "Custom Steel is a dynamically growing company specializing in custom-made metal structures such as railings, furniture, barriers, and electrical services. We combine the precision of craftsmanship with modern technologies to deliver top-quality products tailored to our clients’ needs. Our passion for creating durable and aesthetically pleasing solutions, along with a professional approach to every project, guarantees satisfaction and reliability."
+    },
+
+    "projects": {
+      "title": "Our projects",
+      "button": "See more"
+    }
+  },
+  "contact": {
+    "title": "Get in touch with us",
+    "title2": "Have an idea for a project?",
+    "description": "Send us a reference photo, dimensions, material, and other relevant details, and we’ll prepare a quote. We’ll respond within 24 hours.",
+
+    "form": {
+      "name": "Name",
+      "email": "Email address",
+      "button": "Send"
+    }
+  },
+  "footer": {
+    "contact": "Contact",
+    "rules": "Privacy Policy | Terms of Service"
+  }
+} 

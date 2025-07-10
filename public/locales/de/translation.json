@@ -1,0 +1,49 @@
+{
+  "home": {
+    "title1": "Ihre Träume,",
+    "title2": "unsere Umsetzungen",
+    "description1": "Bei Custom Steel verbinden wir Handwerkskunst mit moderner Technologie, um langlebige Konstruktionen zu schaffen, die auf individuelle Bedürfnisse zugeschnitten sind. Vom Entwurf bis zur Montage – ",
+    "description2": "wir kümmern uns um jeden Schritt des Prozesses.",
+    "button": "Kontaktieren Sie uns!",
+
+    "cards": {
+      "1": {
+        "title": "Präzision und Qualität in der Ausführung",
+        "description": "Wir nutzen moderne Technologien und bewährte Methoden, um langlebige, robuste und ästhetisch ansprechende Produkte zu liefern."
+      },
+      "2": {
+        "title": "Individueller Ansatz für Projekte",
+        "description": "Wir bieten keine Standardlösungen an. Wir passen uns Ihren Bedürfnissen, Ihrem Raum und Ihrem Budget an und realisieren maßgeschneiderte Projekte."
+      },
+      "3": {
+        "title": "Vertrauensvoller Partner bei der Umsetzung",
+        "description": "Vom ersten Kontakt bis zur finalen Montage – Sie können auf unsere Unterstützung, Pünktlichkeit und volles Engagement zählen."
+      }
+    },
+
+    "about": {
+      "title": "Was machen wir?",
+      "description": "Custom Steel ist ein dynamisch wachsendes Unternehmen, das sich auf die Umsetzung individueller Aufträge für Metallkonstruktionen wie Geländer, Möbel, Absperrungen sowie auf Elektrodienstleistungen spezialisiert hat. Wir verbinden die Präzision des Handwerks mit modernen Technologien, um Produkte höchster Qualität zu liefern, die auf die Bedürfnisse unserer Kunden zugeschnitten sind. Unsere Leidenschaft für die Schaffung langlebiger und ästhetisch ansprechender Lösungen sowie unser professioneller Ansatz bei jedem Projekt garantieren Zufriedenheit und Zuverlässigkeit."
+    },
+
+    "projects": {
+      "title": "Unsere Projekte",
+      "button": "Mehr sehen"
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "title2": "Haben Sie eine Idee für ein Projekt?",
+    "description": "Senden Sie uns ein Referenzfoto, Maße, Material und andere relevante Informationen, und wir erstellen ein Angebot. Wir antworten innerhalb von 24 Stunden.",
+
+    "form": {
+      "name": "Name",
+      "email": "E-Mail-Adresse",
+      "button": "Senden"
+    }
+  },
+  "footer": {
+    "contact": "Kontakt",
+    "rules": "Datenschutzrichtlinie | Nutzungsbedingungen"
+  }
+}
