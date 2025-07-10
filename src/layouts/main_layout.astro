@@ -1,5 +1,10 @@
 ---
 import "../styles/global.css";
+import { loadTranslations, t } from "../utils/i18n";
+const { lang } = Astro.params;
+
+// Load translations for the given language
+await loadTranslations(lang);
 ---
 
 <html lang="pl">
@@ -9,12 +14,12 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
 
-    <title>{t("home.title")}</title>
+    <title>{t("home.title1")}</title>
   </head>
 
   <body>
-    <h1>{t("home.title")}</h1>
-    <a href={localizePath("/about")}>...</a>
+    <h1>{t("home.title1")}</h1>
+    <a>...</a>
     <slot />
   </body>
 </html>
