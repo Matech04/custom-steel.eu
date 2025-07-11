@@ -64,7 +64,7 @@ nav.closed .button svg{
 
 .cards{
   @apply grid xl:grid-cols-3 
-  gap-6 lg:gap-12 xl:gap-0 mt-[-15vh] sm:mt-[-5vh] xl:mt-0
+  gap-6 lg:gap-12 xl:gap-0 mt-[-12vh] sm:mt-[-5vh] xl:mt-0
   2xl:pt-[10vw] 2xl:px-40
 }
 
