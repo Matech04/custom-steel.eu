@@ -1,6 +1,7 @@
 ---
 import { loadTranslations, t } from "../utils/i18n";
-await loadTranslations;
+const { lang } = Astro.params;
+await loadTranslations(lang);
 ---
 
 <footer class="section flex flex-col gap-4 pb-20">

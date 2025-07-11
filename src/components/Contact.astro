@@ -1,7 +1,7 @@
 ---
 import { loadTranslations, t } from "../utils/i18n";
-
-await loadTranslations;
+const { lang } = Astro.params;
+await loadTranslations(lang);
 ---
 
 <div class="section">
