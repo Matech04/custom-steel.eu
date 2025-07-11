@@ -46,6 +46,11 @@
   "footer": {
     "contact": "Kontakt",
     "rules": "Polityka prywatności | Warunki korzystania z serwisu"
+  },
+  "navbar": {
+    "main": "Strona główna",
+    "projects": "Projekty",
+    "contact": "Kontakt"
   }
   
 }

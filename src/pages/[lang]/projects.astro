@@ -1,0 +1,55 @@
+---
+import MainLayout from "../../layouts/main_layout.astro";
+import { loadTranslations, t } from "../../utils/i18n";
+
+import { readdirSync } from "fs";
+import { join } from "path";
+import Image from "astro/components/Image.astro";
+
+import Image1 from "../../images/1000010084.jpg";
+import Image2 from "../../images/1000011839.png";
+import Image3 from "../../images/1000014393.jpg";
+import Image4 from "../../images/1000014401.jpg";
+import Image5 from "../../images/1000014404.jpg";
+import Image6 from "../../images/1000014405.jpg";
+import Image7 from "../../images/1000014406.jpg";
+import Image8 from "../../images/1000014410.jpg";
+import Image9 from "../../images/1000014411.jpg";
+import Image10 from "../../images/ee1e8437-adde-4d79-95dc-2b7129b7a6a3-1_all_778.jpg";
+import Image11 from "../../images/ee1e8437-adde-4d79-95dc-2b7129b7a6a3-1_all_842.jpg";
+
+const { lang } = Astro.params;
+await loadTranslations(lang);
+
+export async function getStaticPaths() {
+  const localesDir = join(process.cwd(), "public", "locales");
+  const supportedLanguages = readdirSync(localesDir, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+  }));
+}
+---
+
+<MainLayout>
+  <div class="section pt-20">
+    <h2>{t("home.projects.title")}</h2>
+    <hr />
+    <div
+      class="project_images grid grid-cols-1 grid-flow-dense gap-4 mb-10 2xl:grid-cols-3"
+    >
+      <Image class="" src={Image1} alt="" />
+      <Image class="" src={Image2} alt="" />
+      <Image class="" src={Image3} alt="" />
+      <Image class="" src={Image4} alt="" />
+      <Image class="" src={Image5} alt="" />
+      <Image class="" src={Image6} alt="" />
+      <Image class="" src={Image7} alt="" />
+      <Image class="" src={Image8} alt="" />
+      <Image class="" src={Image9} alt="" />
+      <Image class="" src={Image10} alt="" />
+      <Image class="" src={Image11} alt="" />
+    </div>
+  </div>
+</MainLayout>

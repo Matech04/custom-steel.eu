@@ -15,32 +15,108 @@ body{
   background-repeat: no-repeat; /* Opcjonalne */
 }
 
+/*Navbar*/
+
+nav{
+  @apply 
+  absolute top-0 h-[50vh]  flex-col bg-dark xl:bg-transparent w-full justify-center items-center text-center gap-8
+  xl:h-[15vh] xl:flex-row 
+}
+
+nav button{
+  @apply xl:hidden
+}
+
+nav .nav_elements{
+  @apply flex flex-col gap-8 lg:text-4xl xl:flex-row w-full justify-around
+}
+
+nav .logo {
+  @apply block m-auto w-20 xl:m-0
+}
+
+.links{
+  @apply flex flex-col gap-6 xl:flex-row xl:items-center 
+}
+
+.languages{
+  @apply flex flex-row gap-8 items-center justify-center
+}
+
+nav.closed{
+  @apply 
+  flex top-0 h-[15vh] w-full  items-end justify-center bg-transparent xl:bg-transparent xl:items-center xl:h-[15vh]
+}
+
+nav.closed .nav_elements{
+  @apply hidden items-center align-middle justify-center xl:flex xl:flex-row xl:gap-8 xl:text-4xl w-full xl:justify-around xl:items-center
+}
+
+nav.closed .button{
+  @apply
+  focus:outline-none p-4
+}
+
+nav.closed .button svg{
+  @apply
+  w-[12vw] h-auto 
+}
+
+.cards{
+  @apply grid xl:grid-cols-3 
+  gap-6 lg:gap-12 xl:gap-0 mt-[-15vh] sm:mt-[-5vh] xl:mt-0
+  2xl:pt-[10vw]
+}
+
 .card{
-  @apply flex flex-col bg-accent mx-8 h-56 rounded-lg py-6 px-8 gap-2 text-center items-center
+  @apply flex flex-col bg-accent mx-8 sm:mx-auto h-56 sm:h-[25vh] lg:h-[30vh] rounded-lg py-6 px-8 max-w-xl
+   xl:max-w-[28vw] gap-2 sm:gap-6 text-center items-center justify-center xl:justify-start
+   2xl:max-w-[25vw] 2xl:mt-[-15vh]
+}
+
+.card svg{
+  @apply w-12 h-auto sm:w-16 xl:w-12
 }
 
 .card h2{
-  @apply text-2xl font-semibold
+  @apply text-2xl font-semibold sm:text-3xl lg:text-4xl xl:text-xl
 }
 
 .card p{
-  @apply text-xs
+  @apply text-xs sm:text-base lg:text-2xl xl:text-lg
+}
+
+.image_container{
+  @apply grid grid-cols-3 xl:grid-cols-5 xl:grid-rows-3
+  grid-flow-dense gap-4 mb-10
 }
 
 .image_container img{
-  @apply object-cover
+  @apply object-cover w-full h-full
+}
+
+.project_images img{
+  @apply object-cover w-full h-full
+}
+
+.img_w {
+  @apply w-full h-auto
+}
+
+.img_h{
+  @apply h-full w-auto
 }
 
 .section{
-  @apply px-8 mt-20
+  @apply px-[10vw] mt-20
 }
 
 .section h2{
-  @apply text-5xl font-bold
+  @apply text-5xl font-bold lg:text-6xl
 }
 
 .section hr{
-  @apply text-accent border-2 w-[40%] my-10
+  @apply text-accent border-2 w-[40%] my-10 sm:border-4
 }
 
 /*Contact form*/
@@ -50,21 +126,26 @@ body{
 }
 
 .contact_form input{
-  @apply text-light border-2 rounded-md w-full py-2 px-2 
+  @apply text-light border-2 rounded-md w-full py-2 lg:py-4 px-2 lg:px-6 sm:text-2xl lg:text-3xl
 }
 
 .contact_form textarea{
-  @apply text-light border-2 rounded-md w-full h-60 py-2 px-2
+  @apply text-light border-2 rounded-md w-full h-60 sm:h-[40vh] py-2 lg:py-4 px-2 lg:px-6 sm:text-2xl lg:text-3xl
 }
 
 .contact_form button{
-  @apply flex text-xl flex-row gap-4 items-center justify-center
-      w-36
+  @apply flex text-xl sm:text-3xl lg:text-4xl flex-row gap-4 items-center justify-center
+      w-36 sm:w-[30vw]
       bg-accent
       text-center
       py-2
       px-6
       rounded-lg
+}
+
+footer p {
+ @apply
+ lg:text-2xl
 }
 
 @theme{

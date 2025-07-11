@@ -9,7 +9,7 @@ export async function loadTranslations(lang){
   try{
     const language = supportedLangs.includes(lang) ? lang : fallbackLang; 
     const trans_path = path.join(process.cwd(), 'public' , 'locales', language, 'translation.json');
-    translation = JSON.parse(fs.readFile(trans_path, 'utf-8'));
+    translation = JSON.parse(await fs.readFile(trans_path, 'utf-8'));
     if (typeof translation !== 'object' || translation === null){
       throw new Error("Invalid translation file structure")
     }

@@ -1,19 +1,19 @@
 {
   "home": {
     "title1": "Your dreams,",
-    "title2": "our creations",
-    "description1": "At Custom Steel, we combine craftsmanship with modern technology to create durable structures tailored to individual needs. From design to installation – ",
+    "title2": "our realizations",
+    "description1": "At Custom Steel, we combine craftsmanship with modern technology, creating solid structures tailored to individual needs. From design to installation – ",
     "description2": "we take care of every stage of the process.",
     "button": "Contact us!",
 
     "cards": {
       "1": {
         "title": "Precision and quality craftsmanship",
-        "description": "We use modern technologies and proven methods to deliver durable, sturdy, and aesthetically pleasing products."
+        "description": "We use modern technologies and proven methods to deliver durable, solid, and aesthetically pleasing products."
       },
       "2": {
         "title": "Individual approach to projects",
-        "description": "We don’t offer off-the-shelf solutions. We tailor our work to your needs, space, and budget, creating custom-made projects."
+        "description": "We don’t offer off-the-shelf solutions. We adapt to your needs, space, and budget, delivering tailor-made projects."
       },
       "3": {
         "title": "Trusted partner in realization",
@@ -23,7 +23,7 @@
 
     "about": {
       "title": "What do we do?",
-      "description": "Custom Steel is a dynamically growing company specializing in custom-made metal structures such as railings, furniture, barriers, and electrical services. We combine the precision of craftsmanship with modern technologies to deliver top-quality products tailored to our clients’ needs. Our passion for creating durable and aesthetically pleasing solutions, along with a professional approach to every project, guarantees satisfaction and reliability."
+      "description": "Custom Steel is a dynamically growing company specializing in custom metal structures such as railings, furniture, barriers, and electrical services. We combine the precision of craftsmanship with modern technologies to deliver top-quality products tailored to our clients’ needs. Our passion for creating durable and aesthetic solutions, along with a professional approach to every project, guarantees satisfaction and reliability."
     },
 
     "projects": {
@@ -34,16 +34,22 @@
   "contact": {
     "title": "Get in touch with us",
     "title2": "Have an idea for a project?",
-    "description": "Send us a reference photo, dimensions, material, and other relevant details, and we’ll prepare a quote. We’ll respond within 24 hours.",
+    "description": "Send us a reference photo, dimensions, material, and other relevant information, and we will prepare a quote. We’ll respond within 24 hours.",
 
     "form": {
       "name": "Name",
       "email": "Email address",
+      "phone": "Phone number",
       "button": "Send"
     }
   },
   "footer": {
     "contact": "Contact",
     "rules": "Privacy Policy | Terms of Service"
+  },
+  "navbar": {
+    "main": "Home",
+    "projects": "Projects",
+    "contact": "Contact"
   }
-} 
+}
