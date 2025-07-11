@@ -1,3 +1,17 @@
 ---
+import { loadTranslations } from "../utils/i18n";
 
+// Domyślny język
+const defaultLang = "en";
+
+// Opcjonalnie: Wykrywanie języka przeglądarki
+const getBrowserLanguage = (request) => {
+  const acceptLanguage = request.headers.get("accept-language") || "";
+  const browserLang = acceptLanguage.split(",")[0]?.split("-")[0]; // np. 'pl', 'en', 'de'
+  return ["pl", "en", "de"].includes(browserLang) ? browserLang : defaultLang;
+};
+
+// Wykonaj przekierowanie
+const lang = Astro.request ? getBrowserLanguage(Astro.request) : defaultLang;
+return Astro.redirect(`/${lang}`);
 ---
