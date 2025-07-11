@@ -1,7 +1,76 @@
 @import "tailwindcss";
 
-@theme{
-  --dark: #060C0F;
-  --light: #FFFFFF;
-  --accent: #DD635A;
+h1,h2,h3,h4,h5,h6,p,a {
+  color: var(--color-light);
 }
+
+body{
+  background-color:#060C0F;
+}
+
+.bg-image {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 90%, #060C0F 100%), /* Biały gradient od przezroczystego do pełnego krycia */
+  url(/Images/background_mobile.png); /* Twoje zdjęcie */
+  background-size: cover; /* Opcjonalne, ale często przydatne */
+  background-repeat: no-repeat; /* Opcjonalne */
+}
+
+.card{
+  @apply flex flex-col bg-accent mx-8 h-56 rounded-lg py-6 px-8 gap-2 text-center items-center
+}
+
+.card h2{
+  @apply text-2xl font-semibold
+}
+
+.card p{
+  @apply text-xs
+}
+
+.image_container img{
+  @apply object-cover
+}
+
+.section{
+  @apply px-8 mt-20
+}
+
+.section h2{
+  @apply text-5xl font-bold
+}
+
+.section hr{
+  @apply text-accent border-2 w-[40%] my-10
+}
+
+/*Contact form*/
+
+.contact_form{
+  @apply flex flex-col gap-8
+}
+
+.contact_form input{
+  @apply text-light border-2 rounded-md w-full py-2 px-2 
+}
+
+.contact_form textarea{
+  @apply text-light border-2 rounded-md w-full h-60 py-2 px-2
+}
+
+.contact_form button{
+  @apply flex text-xl flex-row gap-4 items-center justify-center
+      w-36
+      bg-accent
+      text-center
+      py-2
+      px-6
+      rounded-lg
+}
+
+@theme{
+  --color-dark: #060C0F;
+  --color-light: #FFFFFF;
+  --color-accent: #DD635A;
+
+}
+

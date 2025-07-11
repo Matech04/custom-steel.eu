@@ -39,6 +39,7 @@
     "form":{
       "name": "Imię",
       "email": "Adres e-mail",
+      "phone": "Numer telefonu",
       "button": "Wyślij"
     }
   },

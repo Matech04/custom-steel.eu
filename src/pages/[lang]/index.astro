@@ -30,17 +30,23 @@ export async function getStaticPaths() {
 ---
 
 <Main_layout>
-  <div class="bg-[url(/Images/background.png)] h-[100vh]">
-    <h1 class="text-xl text-white">
-      {t("home.title1")}<br /><strong>{t("home.title2")}</strong>
-    </h1>
-    <h2>
-      {t("home.description1")}<span>{t("home.description2")}</span>
-    </h2>
-    <a>{t("home.button")}</a>
+  <div class="bg-image h-[100vh] flex flex-col justify-center">
+    <div class="px-6 h-[50%] flex flex-col gap-6 mb-32">
+      <h1 class="text-6xl">
+        {t("home.title1")}<br /><strong>{t("home.title2")}</strong>
+      </h1>
+      <h2 class="text-base">
+        {t("home.description1")}
+        <span class="text-accent">{t("home.description2")}</span>
+      </h2>
+      <a class="text-xl w-42 bg-accent text-center py-2 rounded-lg" href="#"
+        >{t("home.button")}</a
+      >
+    </div>
   </div>
-  <div>
-    <div>
+
+  <div class="flex flex-col gap-6 mt-[-10rem]">
+    <div class="card">
       <svg
         width="42"
         height="43"
@@ -61,7 +67,7 @@ export async function getStaticPaths() {
       <p>{t("home.cards.1.description")}</p>
     </div>
 
-    <div>
+    <div class="card">
       <svg
         width="42"
         height="42"
@@ -84,7 +90,7 @@ export async function getStaticPaths() {
       <p>{t("home.cards.2.description")}</p>
     </div>
 
-    <div>
+    <div class="card">
       <svg
         width="42"
         height="43"
@@ -104,21 +110,47 @@ export async function getStaticPaths() {
       <h2>{t("home.cards.3.title")}</h2>
       <p>{t("home.cards.3.description")}</p>
     </div>
+  </div>
 
-    <div>
-      <h2>{t("home.about.title")}</h2>
-      <hr />
-      <p>{t("home.about.description")}</p>
+  <div class="section">
+    <h2>{t("home.about.title")}</h2>
+    <hr />
+    <p class="text-xl">{t("home.about.description")}</p>
+  </div>
+
+  <div class="section">
+    <h2 class="text-5xl font-bold">{t("home.projects.title")}</h2>
+    <hr class="text-accent border-2 w-[40%] my-10" />
+
+    <div class="image_container grid grid-cols-3 grid-flow-dense gap-4 mb-10">
+      <Image class="col-span-3 w-[345px] h-[345px]" src={Image1} alt="" />
+      <Image class="col-span-3 w-[345px] h-[345px]" src={Image2} alt="" />
+      <Image class="col-span-2 w-[224px] h-[100px]" src={Image3} alt="" />
+      <Image class="w-[224px] h-[100px]" src={Image4} alt="" />
     </div>
 
-    <div>
-      <h2>{t("home.projects.title")}</h2>
-      <Image src={Image1} alt="" />
-      <Image src={Image2} alt="" />
-      <Image src={Image3} alt="" />
-      <Image src={Image4} alt="" />
-      <hr />
-      <a>{t("home.projects.button")}</a>
+    <div
+      class="text-xl flex flex-row gap-4 items-center justify-center
+      w-52
+      bg-accent
+      text-center
+      py-2
+      px-6
+      rounded-lg"
+    >
+      <a href="">{t("home.projects.button")}</a>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 20 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M7.36861 4.97217L12.2178 9.82133L7.36861 14.6705"
+          stroke="white"
+          stroke-width="2.42458"></path>
+      </svg>
     </div>
   </div>
 </Main_layout>

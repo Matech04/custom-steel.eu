@@ -1,0 +1,55 @@
+---
+
+---
+
+<nav class="fixed h-12 w-full flex justify-end">
+  <button id="hamburger-btn" class="md:hidden focus:outline-none p-4">
+    <svg
+      class="w-6 h-6 text-white"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        id="top-line"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16"></path>
+      <path
+        id="middle-line"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 12h16"></path>
+      <path
+        id="bottom-line"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 18h16"></path>
+    </svg>
+  </button>
+</nav>
+
+<script>
+  const hamburger = document.getElementById("hamburger-btn");
+  hamburger.addEventListener("click", () => {
+    const topLine = document.getElementById("top-line");
+    const middleLine = document.getElementById("middle-line");
+    const bottomLine = document.getElementById("bottom-line");
+
+    if (hamburger.classList.contains("active")) {
+      topLine.setAttribute("d", "M4 6h16");
+      middleLine.setAttribute("d", "M4 12h16");
+      bottomLine.setAttribute("d", "M4 18h16");
+      hamburger.classList.remove("active");
+    } else {
+      topLine.setAttribute("d", "M6 6L18 18");
+      middleLine.setAttribute("d", "M12 12h0");
+      bottomLine.setAttribute("d", "M6 18L18 6");
+      hamburger.classList.add("active");
+    }
+  });
+</script>

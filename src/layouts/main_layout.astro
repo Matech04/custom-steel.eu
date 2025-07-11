@@ -1,4 +1,9 @@
 ---
+import "../components/Navbar.astro";
+import Navbar from "../components/Navbar.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+
 import "../styles/global.css";
 import { loadTranslations, t } from "../utils/i18n";
 const { lang } = Astro.params;
@@ -18,8 +23,9 @@ await loadTranslations(lang);
   </head>
 
   <body>
-    <h1>{t("home.title1")}</h1>
-    <a>...</a>
+    <Navbar />
     <slot />
+    <Contact />
+    <Footer />
   </body>
 </html>
