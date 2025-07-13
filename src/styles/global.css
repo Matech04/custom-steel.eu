@@ -143,6 +143,10 @@ nav.closed .button svg{
       rounded-lg
 }
 
+.error {
+  @apply text-accent pl-4
+}
+
 footer p {
  @apply
  lg:text-2xl

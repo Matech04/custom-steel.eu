@@ -16,12 +16,47 @@ await loadTranslations(lang);
       </p>
     </div>
 
-    <form class="contact_form xl:col-span-2">
-      <input placeholder={t("contact.form.name")} />
-      <input placeholder={t("contact.form.email")} />
-      <input placeholder={t("contact.form.phone")} />
-      <textarea></textarea>
-      <button>
+    <form id="form" class="contact_form xl:col-span-2">
+      <input name="name" placeholder={t("contact.form.name")} />
+      <p id="name_error" class="error"></p>
+      <input name="email" placeholder={t("contact.form.email")} />
+      <p id="email_error" class="error"></p>
+      <input name="phone" placeholder={t("contact.form.phone")} />
+      <p id="phone_error" class="error"></p>
+      <div class="relative">
+        <textarea name="textarea"></textarea>
+        <label
+          class="absolute bottom-2 right-2 hover:cursor-pointer flex flex-row gap-2 items-center text-4xl font-bold"
+        >
+          <input
+            class="hidden"
+            type="file"
+            accept=".png,.jpg,.avif.webp"
+            multiple
+            id="fileInput"
+            name="images"
+          />
+          <p id="file_error" class="error text-base"></p>
+          <p id="imageCounter"></p>
+          <svg
+            id="imageSvg"
+            class="text-accent w-12 lg:w-16 2xl:w-18"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            ></path>
+          </svg>
+        </label>
+      </div>
+
+      <button class="hover:cursor-pointer">
         <p>{t("contact.form.button")}</p>
         <svg
           width="22"
@@ -38,3 +73,157 @@ await loadTranslations(lang);
     </form>
   </div>
 </div>
+
+<script>
+  const translations = {
+    pl: {
+      "@": "Niepoprawny e-mail.",
+      length: "Pole nie może być puste.",
+      max: "Max 3 zdjęcia.",
+      type: "Niepoprawny typ pliku",
+      size: "Maksymalna wielkość zdjęcia to 5mb",
+      text_long: "Maksymalnie 500 znaków",
+    },
+    en: {
+      "@": "Invalid email.",
+      length: "Field cannot be empty.",
+      max: "Max 3 photos.",
+      type: "Invalid file type.",
+      size: "Maximum photo size is 5MB.",
+      text_long: "Maximum 500 characters",
+    },
+    de: {
+      "@": "Ungültige E-Mail.",
+      length: "Feld darf nicht leer sein.",
+      max: "Maximal 3 Fotos.",
+      type: "Ungültiger Dateityp.",
+      size: "Maximale Fotogröße beträgt 5 MB.",
+      text_long: "Maximale 500 Charaktere",
+    },
+  };
+
+  let lang = "pl";
+  const url = window.location.href;
+  const splited_url = url.split("/");
+
+  if (splited_url.includes("pl")) {
+    lang = "pl";
+  } else if (splited_url.includes("de")) {
+    lang = "de";
+  } else if (splited_url.includes("en")) {
+    lang = "en";
+  }
+
+  const maxSize = 5 * 1024 * 1024; // 5mb
+
+  const fileInput = document.getElementById("fileInput");
+  const svg = document.getElementById("imageSvg");
+  const imageCounter = document.getElementById("imageCounter");
+
+  fileInput?.addEventListener("change", () => {
+    const fileCount = fileInput.files.length;
+
+    console.log("Change");
+
+    if (fileCount > 0) {
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.setAttribute("fill", "currentColor");
+      svg?.setAttribute("stroke", "1");
+      svg.innerHTML = `<path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />`;
+      imageCounter.innerText = fileCount;
+    } else {
+      svg.setAttribute("width", "22");
+      svg.setAttribute("height", "21");
+      svg.setAttribute("viewBox", "0 0 22 21");
+      svg.setAttribute("fill", "none");
+      svg.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />`;
+    }
+  });
+
+  const form = document.getElementById("form");
+  const name_error = document.getElementById("name_error");
+  const email_error = document.getElementById("email_error");
+  const phone_error = document.getElementById("phone_error");
+  const file_error = document.getElementById("file_error");
+
+  const errors = {
+    name: name_error,
+    email: email_error,
+    phone: phone_error,
+    file: file_error,
+  };
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    formData.append("receiver", "mateusz.chodacki@gmail.com");
+    formData.append("lang", lang);
+
+    Object.entries(errors).forEach(([key, value]) => {
+      value.textContent = "";
+    });
+
+    const files = fileInput.files;
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formData.get("email").length) {
+      errors.email.textContent = `${translations[lang]["length"]}`;
+    } else if (!emailPattern.test(formData.get("email"))) {
+      errors.email.textContent = `${translations[lang]["@"]}`;
+    }
+
+    if (!formData.get("name").length) {
+      errors.name.textContent = `${translations[lang]["length"]}`;
+    }
+
+    if (!formData.get("phone").length) {
+      errors.phone.textContent = `${translations[lang]["length"]}`;
+    }
+
+    if (formData.get("textarea").length > 1000) {
+      errors.file.textContent = translations[lang]["text_long"];
+    }
+
+    if (files.length > 3) {
+      errors.file.textContent = translations[lang]["max"];
+    } else {
+      for (const file of files) {
+        if (!file.type.startsWith("image/")) {
+          errors.file.textContent = translations[lang]["type"];
+        } else if (file.size > maxSize) {
+          errors.file.textContent = translations[lang]["size"];
+        }
+      }
+    }
+
+    let hasErrors = false;
+    Object.entries(errors).forEach(([key, value]) => {
+      if (hasErrors) return;
+      if (value?.textContent != "") {
+        hasErrors = true;
+      }
+    });
+
+    if (!hasErrors) {
+      try {
+        const response = await fetch(
+          "https://formmailer-production.up.railway.app/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`Http error: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(`Server response:`, result);
+      } catch (error) {
+        console.error(`Error: ${error}`);
+      }
+    }
+  });
+</script>
