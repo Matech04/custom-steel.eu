@@ -15,12 +15,30 @@ body{
   background-repeat: no-repeat; /* Opcjonalne */
 }
 
+@media only screen and (min-width: 1024px) {
+  .bg-image {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 90%, #060C0F 100%), /* Biały gradient od przezroczystego do pełnego krycia */
+  url(/Images/background_tablet.png); /* Twoje zdjęcie */
+  background-size: cover; /* Opcjonalne, ale często przydatne */
+  background-repeat: no-repeat; /* Opcjonalne */
+  }   
+}
+
+@media only screen and (min-width: 1280px) {
+  .bg-image {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 90%, #060C0F 100%), /* Biały gradient od przezroczystego do pełnego krycia */
+  url(/Images/background.png); /* Twoje zdjęcie */
+  background-size: cover; /* Opcjonalne, ale często przydatne */
+  background-repeat: no-repeat; /* Opcjonalne */
+  }   
+}
+
 /*Navbar*/
 
 nav{
   @apply 
   absolute top-0 h-[50vh]  flex-col bg-dark xl:bg-transparent w-full justify-center items-center text-center gap-8
-  xl:h-[15vh] xl:flex-row 
+  lg:pt-2 xl:h-[15vh] xl:flex-row 
 }
 
 nav button{
@@ -69,7 +87,7 @@ nav.closed .button svg{
 }
 
 .card{
-  @apply flex flex-col bg-accent mx-8 sm:mx-auto h-56 sm:h-[25vh] lg:h-[30vh] rounded-lg py-6 px-8 max-w-xl
+  @apply flex flex-col bg-accent mx-8 sm:mx-auto h-56 sm:h-[25vh] lg:h-[45vh] xl:h-[35vh] rounded-lg py-6 px-8 max-w-xl
    xl:max-w-[28vw] gap-2 sm:gap-6 text-center items-center justify-center xl:justify-start
    2xl:max-w-[25vw] 2xl:mt-[-15vh]
 }
@@ -150,6 +168,10 @@ nav.closed .button svg{
 footer p {
  @apply
  lg:text-2xl
+}
+
+footer .sign {
+  @apply text-xs mt-5
 }
 
 @theme{
