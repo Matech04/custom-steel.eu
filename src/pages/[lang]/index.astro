@@ -10,6 +10,7 @@ import Image1 from "../../images/1000010084.jpg";
 import Image2 from "../../images/1000014405.jpg";
 import Image3 from "../../images/1000014393.jpg";
 import Image7 from "../../images/1000014406.jpg";
+import Intro from "../../components/Intro.astro";
 
 // Get the language from the URL parameter
 const { lang } = Astro.params;
@@ -30,19 +31,20 @@ export async function getStaticPaths() {
 ---
 
 <Main_layout>
+  <Intro />
   <div class="bg-image h-[100vh] w-full lg:h-auto flex flex-col justify-center">
     <div
       class="pl-[10vw] pr-[15vw] sm:pr-[35vw] h-[50%] flex flex-col gap-6 sm:gap-12 mb-32 lg:mt-20 xl:mt-[20vh]"
     >
-      <h1 class="text-6xl sm:text-7xl lg:text-8xl">
+      <h1 class="text-6xl sm:text-7xl lg:text-7xl lg:mt-5">
         {t("home.title1")}<br /><strong>{t("home.title2")}</strong>
       </h1>
-      <h2 class="text-base sm:text-3xl lg:text-4xl">
+      <h2 class="text-base sm:text-3xl lg:text-3xl">
         {t("home.description1")}
         <span class="text-accent">{t("home.description2")}</span>
       </h2>
       <a
-        class="text-xl w-42 sm:text-3xl lg:text-4xl sm:w-64 lg:w-[35vw] bg-accent text-center py-2 lg:py-4 rounded-lg"
+        class="text-xl w-42 sm:text-3xl lg:text-4xl sm:w-64 lg:w-[30vw] bg-accent text-center py-2 lg:py-4 rounded-lg"
         href=`#contact`>{t("home.button")}</a
       >
     </div>

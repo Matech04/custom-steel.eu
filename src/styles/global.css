@@ -37,20 +37,26 @@ body{
 
 nav{
   @apply 
-  absolute top-0 h-[50vh]  flex-col bg-dark xl:bg-transparent w-full justify-center items-center text-center gap-8
-  lg:pt-2 xl:h-[15vh] xl:flex-row 
+  absolute top-0 h-auto pb-4 flex-col bg-dark xl:bg-transparent w-full justify-center items-center text-center gap-8
+  lg:pt-6 xl:pt-4 xl:h-[15vh] xl:flex-row lg:text-4xl xl:text-base 
 }
 
 nav button{
   @apply xl:hidden
 }
 
+nav .button svg{
+  @apply
+  w-[12vw] md:w-[8vw] lg:w-[6vw] h-auto mt-5
+}
+
+
 nav .nav_elements{
-  @apply flex flex-col gap-8 lg:text-4xl xl:flex-row w-full justify-around
+  @apply flex flex-col gap-8 xl:flex-row w-full justify-around
 }
 
 nav .logo {
-  @apply block m-auto w-20 xl:m-0
+  @apply block m-auto w-20 xl:m-0 xl:w-12
 }
 
 .links{
@@ -67,7 +73,7 @@ nav.closed{
 }
 
 nav.closed .nav_elements{
-  @apply hidden items-center align-middle justify-center xl:flex xl:flex-row xl:gap-8 xl:text-4xl w-full xl:justify-around xl:items-center
+  @apply hidden items-center align-middle justify-center xl:flex xl:flex-row xl:gap-8 xl:text-xl w-full xl:justify-around xl:items-center
 }
 
 nav.closed .button{
@@ -77,19 +83,25 @@ nav.closed .button{
 
 nav.closed .button svg{
   @apply
-  w-[12vw] h-auto 
+  w-[12vw] md:w-[8vw] lg:w-[6vw] h-auto 
 }
 
 .cards{
   @apply grid xl:grid-cols-3 
-  gap-6 lg:gap-12 xl:gap-0 mt-[-12vh] sm:mt-[-5vh] xl:mt-0
-  2xl:pt-[10vw] 2xl:px-40
+  gap-6 lg:gap-12 xl:gap-8 mt-[-12vh] sm:mt-[-5vh] xl:mt-0
+  2xl:pt-[10vw] 
+  lg:mx-16 xl:mx-24 2xl:mx-28 
 }
 
 .card{
-  @apply flex flex-col bg-accent mx-8 sm:mx-auto h-56 sm:h-[25vh] lg:h-[45vh] xl:h-[35vh] rounded-lg py-6 px-8 max-w-xl
-   xl:max-w-[28vw] gap-2 sm:gap-6 text-center items-center justify-center xl:justify-start
-   2xl:max-w-[25vw] 2xl:mt-[-15vh]
+  @apply flex flex-col bg-accent mx-5
+  h-auto
+  w-auto
+  rounded-lg 
+  py-8 px-8 
+  gap-2 sm:gap-6 
+  text-center items-center justify-center xl:justify-start
+  2xl:mt-[-15vh]
 }
 
 .card svg{
@@ -97,11 +109,11 @@ nav.closed .button svg{
 }
 
 .card h2{
-  @apply text-2xl font-semibold sm:text-3xl lg:text-4xl xl:text-xl
+  @apply text-2xl font-semibold sm:text-3xl lg:text-3xl xl:text-lg
 }
 
 .card p{
-  @apply text-xs sm:text-base lg:text-2xl xl:text-lg
+  @apply text-xs sm:text-base lg:text-2xl xl:text-base
 }
 
 .image_container{
@@ -126,29 +138,29 @@ nav.closed .button svg{
 }
 
 .section{
-  @apply px-[10vw] mt-20
+  @apply px-[10vw] lg:px-[15vw] mt-20
 }
 
 .section h2{
-  @apply text-5xl font-bold lg:text-6xl
+  @apply text-4xl font-bold lg:text-5xl
 }
 
 .section hr{
-  @apply text-accent border-2 w-[40%] my-10 sm:border-4
+  @apply text-accent border-2 w-[40%] my-10 sm:border-4 
 }
 
 /*Contact form*/
 
 .contact_form{
-  @apply flex flex-col gap-8
+  @apply flex flex-col gap-6 lg:gap-2
 }
 
 .contact_form input{
-  @apply text-light border-2 rounded-md w-full py-2 lg:py-4 px-2 lg:px-6 sm:text-2xl lg:text-3xl
+  @apply text-light border-2 rounded-md w-full py-2 lg:py-4 px-2 lg:px-6 sm:text-2xl lg:text-3xl xl:text-2xl
 }
 
 .contact_form textarea{
-  @apply text-light border-2 rounded-md w-full h-60 sm:h-[40vh] py-2 lg:py-4 px-2 lg:px-6 sm:text-2xl lg:text-3xl
+  @apply text-light border-2 rounded-md w-full h-60 sm:h-[40vh] py-2 lg:py-4 px-2 lg:px-6 sm:text-2xl lg:text-3xl xl:text-2xl
 }
 
 .contact_form button{
@@ -173,6 +185,38 @@ footer p {
 footer .sign {
   @apply text-xs mt-5
 }
+
+.banner {
+  overscroll-behavior: none;
+  @apply h-[100vh] w-full hidden absolute 
+}
+
+.background {
+  @apply bg-dark
+}
+
+.stop_scroll{
+  @apply overflow-hidden
+}
+
+.slide {
+  transition: opacity 1s ease-in-out;
+  
+  @apply h-[100vh] grid grid-cols-3 absolute opacity-0 w-full
+  
+}
+.banner div.active {
+  @apply opacity-100
+}
+
+.slide img {
+  @apply w-full h-full object-cover overflow-hidden  border-2
+}
+
+.slide img .logo {
+  @apply w-full h-full object-cover overflow-hidden  border-2
+}
+
 
 @theme{
   --color-dark: #060C0F;

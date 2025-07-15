@@ -41,10 +41,29 @@ await loadTranslations(lang);
       <a href={`/${lang}/projects`}>{t("navbar.projects")}</a>
       <a href="#contact">{t("navbar.contact")}</a>
     </div>
-    <div class="languages">
-      <a id="pl" href="/pl">PL</a>
-      <a id="en" href="/en">EN</a>
-      <a id="de" href="/de">DE</a>
+    <div class="flex flex-col xl:flex-row gap-6">
+      <div class="languages">
+        <a id="pl" href="/pl">PL</a>
+        <a id="en" href="/en">EN</a>
+        <a id="de" href="/de">DE</a>
+      </div>
+
+      <svg
+        id="introPlayer"
+        class="text-accent w-12 text-center mx-auto xl:mx-0"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
+        ></path>
+      </svg>
     </div>
   </div>
   <button id="hamburger-btn" class="button">
@@ -80,6 +99,13 @@ await loadTranslations(lang);
 <script>
   const hamburger = document.getElementById("hamburger-btn");
   const nav = document.getElementById("nav");
+
+  const introBtn = document.getElementById("introPlayer");
+
+  introBtn?.addEventListener("click", () => {
+    console.log("click");
+    window.playIntro();
+  });
 
   hamburger.addEventListener("click", () => {
     const topLine = document.getElementById("top-line");

@@ -1,0 +1,23 @@
+---
+import MainLayout from "../../layouts/main_layout.astro";
+import { loadTranslations, t } from "../../utils/i18n";
+import Intro from "../../components/Intro.astro";
+
+import { readdirSync } from "fs";
+import { join } from "path";
+
+const { lang } = Astro.params;
+await loadTranslations(lang);
+
+export async function getStaticPaths() {
+  const localesDir = join(process.cwd(), "public", "locales");
+  const supportedLanguages = readdirSync(localesDir, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+  }));
+}
+---
+
+<Intro />
