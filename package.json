@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "tinacms dev -c \"astro dev\"",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -12,6 +12,11 @@
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.11.0",
     "fast-glob": "^3.3.3",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "tinacms": "^2.8.1"
+  },
+  "devDependencies": {
+    "@tinacms/cli": "^1.10.1",
+    "@types/node": "^24.0.14"
   }
 }
