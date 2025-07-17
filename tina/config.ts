@@ -31,7 +31,7 @@ export default defineConfig({
       {
         name: "home",
         label: "Strona Główna",
-        path: "content/home",
+        path: "/src/content/home",
         fields: [
           {
             type: "string",
@@ -155,7 +155,7 @@ export default defineConfig({
       {
         name: "contact",
         label: "Kontakt",
-        path: "content/contact",
+        path: "/src/content/contact",
         fields: [
           {
             type: "string",
@@ -204,7 +204,7 @@ export default defineConfig({
       {
         name: "footer",
         label: "Stopka",
-        path: "content/footer",
+        path: "/src/content/footer",
         fields: [
           {
             type: "string",
@@ -221,7 +221,7 @@ export default defineConfig({
       {
         name: "navbar",
         label: "Nawigacja",
-        path: "content/navbar",
+        path: "/src/content/navbar",
         fields: [
           {
             type: "string",

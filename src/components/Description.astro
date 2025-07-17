@@ -1,0 +1,21 @@
+---
+import Title from "./Title.astro";
+
+interface Props {
+  title: string;
+  text: string;
+}
+
+const { title, text } = Astro.props;
+---
+
+<style>
+  p {
+    font-size: 3vw;
+  }
+</style>
+
+<div>
+  <Title title={title} />
+  <p>{text}</p>
+</div>

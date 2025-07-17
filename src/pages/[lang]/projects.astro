@@ -1,10 +1,13 @@
 ---
 import MainLayout from "../../layouts/main_layout.astro";
 import { loadTranslations, t } from "../../utils/i18n";
+import { getEntry } from "astro:content";
 
 import { readdirSync } from "fs";
 import { join } from "path";
 import Image from "astro/components/Image.astro";
+
+import Title from "../../components/Title.astro";
 
 import Image1 from "../../images/1000010084.jpg";
 import Image2 from "../../images/1000011839.png";
@@ -17,8 +20,18 @@ import Image8 from "../../images/1000014410.jpg";
 import Image9 from "../../images/1000014411.jpg";
 import Image11 from "../../images/ee1e8437-adde-4d79-95dc-2b7129b7a6a3-1_all_842.jpg";
 
+const images = Object.values(
+  import.meta.glob("/src/images/projects/*.{svg,png,jpg,jpeg}", {
+    eager: true,
+  })
+);
+
 const { lang } = Astro.params;
-await loadTranslations(lang);
+let translations = await getEntry("home", lang);
+if (!translations) {
+  translations = await getEntry("home", "pl");
+}
+const p = translations.data;
 
 export async function getStaticPaths() {
   const localesDir = join(process.cwd(), "public", "locales");
@@ -33,21 +46,12 @@ export async function getStaticPaths() {
 
 <MainLayout>
   <div class="section pt-20">
-    <h2>{t("home.projects.title")}</h2>
-    <hr />
+    <Title title={p.projects.title} />
+
     <div
       class="project_images grid grid-cols-1 grid-flow-dense gap-4 mb-10 2xl:grid-cols-3"
     >
-      <Image class="" src={Image1} alt="" />
-      <Image class="" src={Image2} alt="" />
-      <Image class="" src={Image3} alt="" />
-      <Image class="" src={Image4} alt="" />
-      <Image class="" src={Image5} alt="" />
-      <Image class="" src={Image6} alt="" />
-      <Image class="" src={Image7} alt="" />
-      <Image class="" src={Image8} alt="" />
-      <Image class="" src={Image9} alt="" />
-      <Image class="" src={Image11} alt="" />
+      {images.map((image) => <Image src={image.default} alt="" />)}
     </div>
   </div>
 </MainLayout>

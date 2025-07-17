@@ -1,21 +1,45 @@
 ---
-import { Image } from "astro:assets";
 import Main_layout from "../../layouts/main_layout.astro";
 import { loadTranslations, t } from "../../utils/i18n.js";
 import { readdirSync } from "fs";
 import { join } from "path";
 
+import { getEntry } from "astro:content";
 // Images import
-import Image1 from "../../images/1000010084.jpg";
-import Image2 from "../../images/1000014405.jpg";
-import Image3 from "../../images/1000014393.jpg";
-import Image7 from "../../images/1000014406.jpg";
+
 import Intro from "../../components/Intro.astro";
+
+import Button from "../../components/Button.astro";
+
+// SVG imports
+import Arrow_right from "/src/svg/arrow_right.svg";
+import Hammer from "/src/svg/hammer.svg";
+import Settings from "/src/svg/settings.svg";
+import Accept from "/src/svg/accept.svg";
+
+import Section from "../../components/Section.astro";
+import GalleryPreview from "../../components/GalleryPreview.astro";
+import Title from "../../components/Title.astro";
+import Description from "../../components/Description.astro";
+import Cards from "../../components/cards/Cards.astro";
+import { text } from "stream/consumers";
+
+const images = import.meta.glob(
+  "/src/images/gallery_preview/*.{svg,png,jpg,jpeg}",
+  {
+    eager: true,
+  }
+);
 
 // Get the language from the URL parameter
 const { lang } = Astro.params;
 
 // Load translations for the given language
+let translations = await getEntry("home", lang);
+if (!translations) {
+  translations = await getEntry("home", "pl");
+}
+const p = translations.data;
 await loadTranslations(lang);
 
 // Define getStaticPaths to generate static routes for each language
@@ -28,6 +52,24 @@ export async function getStaticPaths() {
     params: { lang },
   }));
 }
+
+const cards = {
+  card1: {
+    title: p.cards.card1.title,
+    text: p.cards.card1.description,
+    svg: Hammer,
+  },
+  card2: {
+    title: p.cards.card2.title,
+    text: p.cards.card2.description,
+    svg: Settings,
+  },
+  card3: {
+    title: p.cards.card3.title,
+    text: p.cards.card3.description,
+    svg: Accept,
+  },
+};
 ---
 
 <Main_layout>
@@ -37,113 +79,33 @@ export async function getStaticPaths() {
       class="pl-[10vw] pr-[15vw] sm:pr-[35vw] h-[50%] flex flex-col gap-6 sm:gap-12 mb-32 lg:mt-20 xl:mt-[20vh]"
     >
       <h1 class="text-6xl sm:text-7xl lg:text-7xl lg:mt-5">
-        {t("home.title1")}<br /><strong>{t("home.title2")}</strong>
+        {p.title1}<br /><strong>{p.title2}</strong>
       </h1>
       <h2 class="text-base sm:text-3xl lg:text-3xl">
-        {t("home.description1")}
-        <span class="text-accent">{t("home.description2")}</span>
+        {p.description1}
+        <span class="text-accent">{p.description2}</span>
       </h2>
       <a
         class="text-xl w-42 sm:text-3xl lg:text-4xl sm:w-64 lg:w-[30vw] bg-accent text-center py-2 lg:py-4 rounded-lg"
-        href=`#contact`>{t("home.button")}</a
+        href=`#contact`>{p.button}</a
       >
     </div>
   </div>
 
-  <div class="cards">
-    <div class="card">
-      <svg viewBox="0 0 42 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M7.04428 21.2267C6.54088 20.7233 5.7247 20.7233 5.2213 21.2267C4.7179 21.7302 4.7179 22.5463 5.2213 23.0497L11.2368 29.0653C11.7402 29.5687 12.5564 29.5687 13.0598 29.0653C13.5632 28.5619 13.5632 27.7457 13.0598 27.2423L7.04428 21.2267Z"
-          fill="white"></path>
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M30.6768 12.3079C31.1686 11.8161 31.1814 11.0226 30.706 10.515L30.7029 10.5117L30.6966 10.505L30.6749 10.4821C30.6565 10.4628 30.6303 10.4355 30.597 10.4011C30.5303 10.3323 30.4348 10.2349 30.3152 10.1165C30.0766 9.88039 29.7393 9.55728 29.3426 9.2081C28.5791 8.5361 27.4845 7.66726 26.4071 7.20426C25.5985 6.85677 24.6539 6.75349 23.7896 6.74648C22.9048 6.7393 21.9918 6.83331 21.1845 6.95512C20.373 7.07755 19.642 7.23216 19.1149 7.3557C18.8505 7.41766 18.6354 7.47227 18.4848 7.51187C18.4094 7.53168 18.35 7.54776 18.3085 7.55917L18.2599 7.57267L18.246 7.57657L18.2418 7.57777L18.2394 7.57846C18.0288 7.63865 17.837 7.75151 17.6821 7.90639L8.22906 17.3595C7.72567 17.8629 7.72567 18.6791 8.22907 19.1825L15.104 26.0574C15.6074 26.5608 16.4235 26.5608 16.9269 26.0574L19.0233 23.9611L30.1429 35.0807C31.8328 36.7707 34.5727 36.7707 36.2627 35.0807C37.9526 33.3908 37.9526 30.6509 36.2627 28.9609L25.1431 17.8414L30.6768 12.3079ZM10.9635 18.271L19.2604 9.97411C19.3794 9.94368 19.5289 9.90662 19.7032 9.86577C20.1835 9.7532 20.2041 9.61374 21.5691 9.50435C22.2982 9.39434 23.0665 9.31878 23.7686 9.32448C24.4912 9.33035 25.0391 9.42241 25.3893 9.5729C26.0696 9.86528 26.9087 10.5003 27.6393 11.1434C27.7415 11.2333 27.8394 11.3215 27.9322 11.4065L16.0155 23.323L10.9635 18.271ZM20.8463 22.1382L23.3201 19.6643L34.4397 30.7839C35.1228 31.467 35.1228 32.5746 34.4397 33.2577C33.7566 33.9409 32.649 33.9409 31.9659 33.2577L20.8463 22.1382Z"
-          fill="white"></path>
-      </svg>
-      <h2>{t("home.cards.1.title")}</h2>
-      <p>{t("home.cards.1.description")}</p>
-    </div>
+  <Section>
+    <Cards cards={cards} />
+  </Section>
 
-    <div class="card">
-      <svg viewBox="0 0 42 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M14.1358 15.4371C13.5669 17.6659 11.5457 19.314 9.13957 19.314C6.2919 19.314 3.9834 17.0055 3.9834 14.1578C3.9834 11.3102 6.2919 9.00166 9.13957 9.00166C11.5457 9.00166 13.5669 10.6497 14.1358 12.8786C14.1882 12.8721 14.2416 12.8688 14.2957 12.8688L36.6392 12.8688C37.3511 12.8688 37.9282 13.4459 37.9282 14.1578C37.9282 14.8698 37.3511 15.4469 36.6392 15.4469L14.2957 15.4469C14.2416 15.4469 14.1882 15.4435 14.1358 15.4371ZM11.7177 14.1578C11.7177 15.5817 10.5634 16.7359 9.13957 16.7359C7.71573 16.7359 6.56148 15.5817 6.56148 14.1578C6.56148 12.734 7.71573 11.5797 9.13957 11.5797C10.5634 11.5797 11.7177 12.734 11.7177 14.1578Z"
-          fill="white"></path>
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M38.3579 27.9076C38.3579 30.7553 36.0494 33.0638 33.2017 33.0638C30.7956 33.0638 28.7744 31.4157 28.2055 29.1868C28.1531 29.1933 28.0997 29.1967 28.0455 29.1967L5.70212 29.1967C4.9902 29.1967 4.41308 28.6195 4.41308 27.9076C4.41308 27.1957 4.9902 26.6186 5.70212 26.6186L28.0455 26.6186C28.0997 26.6186 28.1531 26.6219 28.2055 26.6284C28.7744 24.3995 30.7956 22.7515 33.2017 22.7515C36.0494 22.7515 38.3579 25.06 38.3579 27.9076ZM35.7798 27.9076C35.7798 29.3315 34.6255 30.4857 33.2017 30.4857C31.7779 30.4857 30.6236 29.3315 30.6236 27.9076C30.6236 26.4838 31.7779 25.3295 33.2017 25.3295C34.6255 25.3295 35.7798 26.4838 35.7798 27.9076Z"
-          fill="white"></path>
-      </svg>
-      <h2>{t("home.cards.2.title")}</h2>
-      <p>{t("home.cards.2.description")}</p>
-    </div>
+  <Section>
+    <Description title={p.about.title} text={p.about.description} />
+  </Section>
 
-    <div class="card">
-      <svg viewBox="0 0 42 43" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M29.3867 17.714C29.8901 17.2106 29.8901 16.3944 29.3867 15.891C28.8833 15.3876 28.0671 15.3876 27.5637 15.891L19.0222 24.4325L14.7776 20.1878C14.2741 19.6844 13.458 19.6844 12.9546 20.1878C12.4512 20.6912 12.4512 21.5074 12.9546 22.0108L18.1107 27.167C18.6141 27.6704 19.4303 27.6704 19.9337 27.167L29.3867 17.714Z"
-          fill="white"></path>
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M38.3579 21.529C38.3579 31.0212 30.6629 38.7162 21.1706 38.7162C11.6784 38.7162 3.9834 31.0212 3.9834 21.529C3.9834 12.0367 11.6784 4.34174 21.1706 4.34174C30.6629 4.34174 38.3579 12.0367 38.3579 21.529ZM35.7798 21.529C35.7798 29.5974 29.2391 36.1381 21.1706 36.1381C13.1022 36.1381 6.56148 29.5974 6.56148 21.529C6.56148 13.4606 13.1022 6.91982 21.1706 6.91982C29.2391 6.91982 35.7798 13.4606 35.7798 21.529Z"
-          fill="white"></path>
-      </svg>
-      <h2>{t("home.cards.3.title")}</h2>
-      <p>{t("home.cards.3.description")}</p>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>{t("home.about.title")}</h2>
-    <hr />
-    <p class="text-xl sm:text-3xl sm:leading-[3rem]">
-      {t("home.about.description")}
-    </p>
-  </div>
-
-  <div class="section">
-    <h2 class="text-5xl font-bold">{t("home.projects.title")}</h2>
-    <hr class="text-accent border-2 w-[40%] my-10" />
-
-    <div class="image_container">
-      <Image class="col-span-3 xl:row-span-3 img_w" src={Image1} alt="" />
-      <Image
-        class="col-span-3 xl:col-span-2 xl:row-span-2"
-        src={Image2}
-        alt=""
-      />
-      <Image class="col-span-2 xl:col-span-1 img_w" src={Image3} alt="" />
-      <Image class="img_h" src={Image7} alt="" />
-    </div>
-
-    <div
-      class="text-xl sm:text-3xl flex flex-row gap-4 items-center justify-center
-      w-52 sm:w-[40vw]
-      bg-accent
-      text-center
-      py-2 lg:py-4
-      px-6
-      rounded-lg"
-    >
-      <a href=`/${lang}/projects`>{t("home.projects.button")}</a>
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M7.36861 4.97217L12.2178 9.82133L7.36861 14.6705"
-          stroke="white"
-          stroke-width="2.42458"></path>
-      </svg>
-    </div>
-  </div>
+  <Section>
+    <Title title={p.projects.title} />
+    <GalleryPreview Images={images} />
+    <Button link={`/${lang}/projects`} text={p.projects.button}>
+      <Arrow_right />
+    </Button>
+    <Section />
+  </Section>
 </Main_layout>
