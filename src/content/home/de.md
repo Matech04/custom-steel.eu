@@ -12,7 +12,7 @@ cards:
     description: >-
       Wir nutzen moderne Technologien und bewährte Methoden, um langlebige, solide
       und ästhetisch ansprechende Produkte zu liefern.
-  card2:
+  card2:  
     title: Individuelle Herangehensweise an Projekte
     description: >-
       Wir bieten keine Standardlösungen. Wir passen uns Ihren Bedürfnissen, Ihrem
