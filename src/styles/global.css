@@ -152,7 +152,7 @@ nav.closed .button svg{
 /*Contact form*/
 
 .contact_form{
-  @apply flex flex-col gap-6 lg:gap-2
+  @apply flex flex-col gap-3 lg:gap-2
 }
 
 .contact_form input{
