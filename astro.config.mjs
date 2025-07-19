@@ -10,5 +10,8 @@ export default defineConfig({
     locales: ["pl", "en", "de"],
     defaultLocale: "pl",
   },
+  redirects: {
+    "/": "/en"
+  }
 
-});
+});1

@@ -9,17 +9,6 @@ import { Image } from "astro:assets";
 
 import Title from "../../components/Title.astro";
 
-import Image1 from "../../images/1000010084.jpg";
-import Image2 from "../../images/1000011839.png";
-import Image3 from "../../images/1000014393.jpg";
-import Image4 from "../../images/1000014401.jpg";
-import Image5 from "../../images/1000014404.jpg";
-import Image6 from "../../images/1000014405.jpg";
-import Image7 from "../../images/1000014406.jpg";
-import Image8 from "../../images/1000014410.jpg";
-import Image9 from "../../images/1000014411.jpg";
-import Image11 from "../../images/ee1e8437-adde-4d79-95dc-2b7129b7a6a3-1_all_842.jpg";
-
 const images = Object.values(
   import.meta.glob("/src/images/projects/*.{svg,png,jpg,jpeg}", {
     eager: true,
@@ -33,6 +22,7 @@ if (!translations) {
 }
 const p = translations.data;
 
+export const prerender = true;
 export async function getStaticPaths() {
   const localesDir = join(process.cwd(), "public", "locales");
   const supportedLanguages = readdirSync(localesDir, { withFileTypes: true })

@@ -1,15 +1,20 @@
 ---
-import Main_layout from "../../layouts/main_layout.astro";
-import { loadTranslations, t } from "../../utils/i18n.js";
-import { readdirSync } from "fs";
-import { join } from "path";
-
+import { getTranslations } from "../../utils/getTranslations";
 import { getEntry } from "astro:content";
+import Image from "astro/components/Image.astro";
 // Images import
 
-import Intro from "../../components/Intro.astro";
+import Image1 from "/src/images/projects/1000010084.jpg";
 
+//Components
+import Main_layout from "../../layouts/main_layout.astro";
+import Intro from "../../components/Intro.astro";
 import Button from "../../components/Button.astro";
+import Section from "../../components/Section.astro";
+import GalleryPreview from "../../components/GalleryPreview.astro";
+import Title from "../../components/Title.astro";
+import Description from "../../components/Description.astro";
+import Cards from "../../components/cards/Cards.astro";
 
 // SVG imports
 import Arrow_right from "/src/svg/arrow_right.svg";
@@ -17,13 +22,7 @@ import Hammer from "/src/svg/hammer.svg";
 import Settings from "/src/svg/settings.svg";
 import Accept from "/src/svg/accept.svg";
 
-import Section from "../../components/Section.astro";
-import GalleryPreview from "../../components/GalleryPreview.astro";
-import Title from "../../components/Title.astro";
-import Description from "../../components/Description.astro";
-import Cards from "../../components/cards/Cards.astro";
-import { text } from "stream/consumers";
-
+// Import images for preview gallery
 const images = import.meta.glob(
   "/src/images/gallery_preview/*.{svg,png,jpg,jpeg}",
   {
@@ -35,22 +34,17 @@ const images = import.meta.glob(
 const { lang } = Astro.params;
 
 // Load translations for the given language
-let translations = await getEntry("home", lang);
-if (!translations) {
-  translations = await getEntry("home", "pl");
-}
-const p = translations.data;
-await loadTranslations(lang);
+let home = await getEntry("home", lang);
+let navbar = await getEntry("navbar", lang);
+let footer = await getEntry("footer", lang);
 
-// Define getStaticPaths to generate static routes for each language
+if (!home) {
+  home = await getEntry("home", "pl");
+}
+const p = home.data;
+
 export async function getStaticPaths() {
-  const localesDir = join(process.cwd(), "public", "locales");
-  const supportedLanguages = readdirSync(localesDir, { withFileTypes: true })
-    .filter((dirent) => dirent.isDirectory())
-    .map((dirent) => dirent.name);
-  return supportedLanguages.map((lang) => ({
-    params: { lang },
-  }));
+  return await getTranslations();
 }
 
 const cards = {
@@ -72,13 +66,12 @@ const cards = {
 };
 ---
 
-<Main_layout>
-  <Intro />
+<Main_layout title={`custom-steel.eu`}>
   <div class="bg-image h-[100vh] w-full lg:h-auto flex flex-col justify-center">
     <div
       class="pl-[10vw] pr-[15vw] sm:pr-[35vw] h-[50%] flex flex-col gap-6 sm:gap-12 mb-32 lg:mt-20 xl:mt-[20vh]"
     >
-      <h1 class="text-6xl sm:text-7xl lg:text-7xl lg:mt-5">
+      <h1 class="text-5xl sm:text-6xl lg:text-7xl lg:mt-5">
         {p.title1}<br /><strong>{p.title2}</strong>
       </h1>
       <h2 class="text-base sm:text-3xl lg:text-3xl">

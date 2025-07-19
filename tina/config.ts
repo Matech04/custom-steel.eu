@@ -1,4 +1,10 @@
-import { defineConfig } from "tinacms";
+import { defineConfig, LocalAuthProvider } from "tinacms";
+
+
+import {
+  TinaUserCollection,
+  UsernamePasswordAuthJSProvider,
+} from 'tinacms-authjs/dist/tinacms'
 
 // Your hosting provider likely exposes this as an environment variable
 const branch =
@@ -7,13 +13,20 @@ const branch =
   process.env.HEAD ||
   "main";
 
+const env = process.env
+const isLocal = env.TINA_PUBLIC_IS_LOCAL === 'true'
+
 export default defineConfig({
   branch,
+  contentApiUrlOverride: '/api/tina/gql',
+  authProvider: isLocal
+    ? new LocalAuthProvider()
+    : new UsernamePasswordAuthJSProvider(),
 
   // Get this from tina.io
-  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
+  clientId: env.NEXT_PUBLIC_TINA_CLIENT_ID,
   // Get this from tina.io
-  token: process.env.TINA_TOKEN,
+  token: env.TINA_TOKEN,
 
   build: {
     outputFolder: "admin",
@@ -28,6 +41,7 @@ export default defineConfig({
   // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
     collections: [
+      TinaUserCollection,
       {
         name: "home",
         label: "Strona Główna",
@@ -155,7 +169,7 @@ export default defineConfig({
       {
         name: "contact",
         label: "Kontakt",
-        path: "/src/content/contact",
+        path: "/src/content/layout/contact",
         fields: [
           {
             type: "string",
@@ -204,7 +218,7 @@ export default defineConfig({
       {
         name: "footer",
         label: "Stopka",
-        path: "/src/content/footer",
+        path: "/src/content/layout/footer",
         fields: [
           {
             type: "string",
@@ -221,7 +235,7 @@ export default defineConfig({
       {
         name: "navbar",
         label: "Nawigacja",
-        path: "/src/content/navbar",
+        path: "/src/content/layout/navbar",
         fields: [
           {
             type: "string",

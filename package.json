@@ -9,11 +9,22 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^9.3.0",
+    "@octokit/rest": "^22.0.0",
     "@tailwindcss/vite": "^4.1.11",
+    "@tinacms/auth": "^1.1.0",
+    "@tinacms/datalayer": "^1.4.0",
+    "@tinacms/graphql": "^1.6.0",
     "astro": "^5.12.0",
     "fast-glob": "^3.3.3",
+    "js-base64": "^3.7.7",
+    "level": "^10.0.0",
+    "mongodb-level": "^0.0.4",
+    "next-auth": "^4.24.11",
     "tailwindcss": "^4.1.11",
-    "tinacms": "^2.8.1"
+    "tinacms": "^2.8.1",
+    "tinacms-authjs": "^11.0.1",
+    "tinacms-gitprovider-github": "^3.0.0"
   },
   "devDependencies": {
     "@tinacms/cli": "^1.10.1",

@@ -37,7 +37,39 @@ const home = defineCollection({
     }),
   })
 });
-const dogs = defineCollection({ /* ... */ });
+
+const contact = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/layout/contact" }),
+  schema: z.object({
+    title1: z.string(),
+    title2: z.string(),
+    description: z.string(),
+    form: z.object({
+      name: z.string(),
+      email: z.string(),
+      phone: z.string(),
+      button: z.string(),
+      }),
+    }),
+  });
+
+const footer = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/layout/footer" }),
+  schema: z.object({
+      contact: z.string(),
+      rules: z.string(),
+  }),
+});
+
+const navbar = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/layout/navbar" }),
+  schema: z.object({
+      main: z.string(),
+      projects: z.string(),
+      contact: z.string(),
+    })
+});
+
 
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { home, dogs };
+export const collections = { home, navbar , contact, footer };

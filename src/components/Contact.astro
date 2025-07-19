@@ -1,27 +1,27 @@
 ---
-import { loadTranslations, t } from "../utils/i18n";
 const { lang } = Astro.params;
-await loadTranslations(lang);
+
+const { title1, title2, description, name, email, phone, button } = Astro.props;
 ---
 
 <div id="contact" class="section">
-  <h2>{t("contact.title")}</h2>
+  <h2>{title1}</h2>
   <hr />
 
   <div class="grid gap-8 xl:grid-cols-3 mt-20">
     <div class="flex flex-col gap-6 mb-10">
-      <h3 class="text-3xl sm:text-4xl lg:text-3xl">{t("contact.title2")}</h3>
+      <h3 class="text-3xl sm:text-4xl lg:text-3xl">{title2}</h3>
       <p class="text-xl sm:text-2xl lg:text-3xl xl:text-2xl xl:leading-12">
-        {t("contact.description")}
+        {description}
       </p>
     </div>
 
     <form id="form" class="contact_form xl:col-span-2">
-      <input name="name" placeholder={t("contact.form.name")} />
+      <input name="name" placeholder={name} />
       <p id="name_error" class="error"></p>
-      <input name="email" placeholder={t("contact.form.email")} />
+      <input name="email" placeholder={email} />
       <p id="email_error" class="error"></p>
-      <input name="phone" placeholder={t("contact.form.phone")} />
+      <input name="phone" placeholder={phone} />
       <p id="phone_error" class="error"></p>
       <div class="relative">
         <textarea name="textarea"></textarea>
@@ -57,7 +57,7 @@ await loadTranslations(lang);
       </div>
 
       <button class="hover:cursor-pointer">
-        <p>{t("contact.form.button")}</p>
+        <p>{button}</p>
         <svg
           width="22"
           height="21"

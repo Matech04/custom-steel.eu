@@ -37,8 +37,8 @@ body{
 
 nav{
   @apply 
-  absolute top-0 h-auto pb-4 flex-col bg-dark xl:bg-transparent w-full justify-center items-center text-center gap-8
-  lg:pt-6 xl:pt-4 xl:h-[15vh] xl:flex-row lg:text-4xl xl:text-base 
+  absolute top-0 h-auto pb-4 flex-col bg-dark xl:bg-transparent w-full justify-center items-center text-center gap-12
+  pt-6 lg:pt-6 xl:pt-4 xl:h-[15vh] xl:flex-row text-xl lg:text-4xl xl:text-base 
 }
 
 nav button{
@@ -183,7 +183,7 @@ footer p {
 }
 
 footer .sign {
-  @apply text-xs mt-5
+  @apply text-[0.55rem] mt-5
 }
 
 .banner {
