@@ -1,6 +1,6 @@
 ---
-title1: 'Twoje marzenia,'
-title2: nasze realizacje
+title1: Loft Design
+title2: Interior & Electrowork
 description1: >-
   W Custom Steel łączymy rzemiosło z nowoczesną technologią, tworząc solidne
   konstrukcje dopasowane do indywidualnych potrzeb. Od projektu po montaż – 

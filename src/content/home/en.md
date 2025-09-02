@@ -1,6 +1,6 @@
 ---
-title1: "Your dreams,"
-title2: our realizations
+title1: Loft Design
+title2: Interior & Electrowork
 description1: >-
   At Custom Steel, we combine craftsmanship with modern technology, creating solid
   structures tailored to individual needs. From design to installation –
