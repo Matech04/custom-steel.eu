@@ -1,0 +1,23 @@
+---
+import { sanityClient } from "sanity:client";
+import Layout from "./Layout.astro";
+import ContactForm from "../components/Contact.astro";
+
+const { lang } = Astro.params;
+
+const data = await sanityClient.fetch(
+  `*[_type == "contact"][0] {
+    "slug": slug[$lang],
+    "seoMeta": seoMeta[$lang]
+  }`,
+  { lang },
+);
+---
+
+<Layout
+  lang={lang}
+  title={data?.seoMeta?.title || ""}
+  description={data?.seoMeta?.description || ""}
+>
+  <div class="margin margin-top"><ContactForm /></div>
+</Layout>

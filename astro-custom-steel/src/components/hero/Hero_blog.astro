@@ -1,0 +1,96 @@
+---
+import Button from "../buttons/Button.astro";
+import getImage from "../../lib/getImage";
+import { Image } from "astro:assets";
+import getAlt from "../../lib/getAlt";
+
+const { title, bg_image, avatar, author, lang } = Astro.props;
+
+const bg_mob = `url(${process.env.CMS}assets/${bg_image}?width=1200&height=675&format=avif)`;
+const bg_tab = `url(${process.env.CMS}assets/${bg_image}?width=1920&height=1080&format=avif)`;
+const bg_desk = `url(${process.env.CMS}assets/${bg_image}?width=2560&height=1440&format=avif)`;
+
+let avatar_image;
+let avatar_alt;
+if (avatar === null) {
+  avatar_image = `https://avatar.iran.liara.run/public/32`;
+  avatar_alt = "Avatar";
+} else {
+  avatar_image = avatar;
+  avatar_alt = getAlt(avatar_image, lang);
+}
+---
+
+<div class="bg-image bg margin">
+  <div class="hero hero_margin">
+    <h1>
+      {title}
+    </h1>
+  </div>
+</div>
+
+<style define:vars={{ bg_mob, bg_tab, bg_desk }}>
+  .bg {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: start;
+  }
+
+  .bg-image {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 90%,
+        #060c0f 100%
+      ),
+      var(--bg_mob);
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .bg-image {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0) 90%,
+          #060c0f 100%
+        ),
+        var(--bg_tab);
+    }
+  }
+
+  @media only screen and (min-width: 1280px) {
+    .bg-image {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0) 90%,
+          #060c0f 100%
+        ),
+        var(--bg_desk);
+    }
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    gap: clamp(24px, 3vw + 1.5rem, 84px);
+    @media (min-width: 1024px) {
+      width: 60%;
+    }
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    background-color: #060c0f;
+    padding-inline: 2rem;
+    text-align: center;
+    border-radius: 20px;
+  }
+
+  p {
+    font-size: var(--base);
+  }
+</style>

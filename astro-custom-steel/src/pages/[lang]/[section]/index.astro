@@ -1,0 +1,80 @@
+---
+import { sanityClient } from "sanity:client";
+import ProjectsSite from "../../../layouts/ProjectsSite.astro";
+import ArticlesSite from "../../../layouts/ArticlesSite.astro";
+import Offer from "../../../layouts/Offer.astro";
+import Contact from "../../../layouts/Contact.astro";
+
+export async function getStaticPaths() {
+  // Possible pages: projects, blog, contact, offer
+
+  const sites = ["projects_site", "articles_site", "contact", "offer"];
+
+  const langs = ["pl", "en", "de"];
+
+  interface SiteData {
+    type: "projects_site" | "articles_site" | "contact" | "offer";
+    slug: {
+      pl: string;
+      en: string;
+      de: string;
+      [key: string]: string; // Na wypadek innych języków w przyszłości
+    };
+  }
+
+  interface AstroPath {
+    params: {
+      lang: string;
+      section: string;
+    };
+    props: {
+      lang: string;
+      type: SiteData["type"];
+    };
+  }
+
+  const allData = await sanityClient.fetch<SiteData[]>(
+    `*[_type in $sites] {
+    "type": _type,
+    "slug": slug,
+  }`,
+    { sites },
+  );
+
+  const paths: AstroPath[] = [];
+
+  allData.forEach((site) => {
+    langs.forEach((lang) => {
+      paths.push({
+        params: { lang: lang, section: site.slug[lang] },
+        props: { lang: lang, type: site.type },
+      });
+    });
+  });
+
+  return paths;
+}
+
+// Odbieramy dane w komponencie
+const { lang, section } = Astro.params;
+const { type } = Astro.props;
+
+let SelectedComponent;
+
+switch (type) {
+  case "projects_site":
+    SelectedComponent = ProjectsSite;
+    break;
+  case "articles_site":
+    SelectedComponent = ArticlesSite;
+    break;
+  case "contact":
+    SelectedComponent = Contact;
+    break;
+  case "offer":
+    SelectedComponent = Offer;
+    break;
+}
+---
+
+<SelectedComponent lang={lang} , section={section} />

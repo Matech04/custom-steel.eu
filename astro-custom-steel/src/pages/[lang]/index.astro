@@ -1,0 +1,134 @@
+---
+import { sanityClient } from "sanity:client";
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/hero/Hero.astro";
+import Section from "../../components/Section.astro";
+import Description from "../../components/Description.astro";
+import Cards from "../../components/cards/Cards.astro";
+import Title from "../../components/Title.astro";
+import GalleryPreview from "../../components/GalleryPreview.astro";
+import Button from "../../components/buttons/Button.astro";
+import Contact from "../../components/Contact.astro";
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: "pl" } },
+    { params: { lang: "en" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const currentLang = Astro.params.lang || "en";
+
+// --------------------------------------------------------
+// ZAPYTANIE GROQ Z PROJEKCJĄ I ZMIENNĄ JĘZYKOWĄ
+// --------------------------------------------------------
+const query = `*[_type == "home"][0] {
+  "seoMeta": meta[$lang],
+  
+  "baner": {
+    "bg_mobile": baner.heroImageMobile,
+    "bg_tablet": baner.heroImageTablet,
+    "bg_desktop": baner.heroImageDesktop,
+    "title_1": baner.title_1[$lang],
+    "title_2": baner.title_2[$lang],
+    "description_1": baner.description_1[$lang],
+    "description_2": baner.description_2[$lang],
+    "button": baner.button[$lang],
+    "button_icon": baner.button_icon.name
+  },
+
+  // Zmieniamy karty w tablicę obiektów (tekst + ikona)
+  "cards": [
+    { 
+      "text": cards.card_1[$lang], 
+      "icon": cards.card_1_icon.name 
+    },
+    { 
+      "text": cards.card_2[$lang], 
+      "icon": cards.card_2_icon.name 
+    },
+    { 
+      "text": cards.card_3[$lang], 
+      "icon": cards.card_3_icon.name 
+    }
+  ],
+
+  "about": {
+    "title": about.title[$lang],
+    "text": about.text[$lang]
+  },
+
+  "projects": {
+    "title": projects.title[$lang],
+    "button": projects.button[$lang],
+    "button_icon": projects.button_icon.name,
+    "gallery": projects.images[] {
+      // Pobieramy cały obiekt obrazka (dla urlFor)
+      "image": @, 
+      // Wybieramy odpowiednie pole alt w zależności od języka
+      "alt": alts[$lang]
+    }
+  }
+}`;
+
+// Przekazujemy aktualny język do zapytania pod kluczem 'lang'
+const homeData = await sanityClient.fetch(query, { lang: currentLang });
+---
+
+<Layout
+  title={homeData.seoMeta}
+  metaDescription={homeData.seoMeta}
+  lang={currentLang}
+>
+  {
+    /* Teraz przekazujemy dane bezpośrednio, bo GROQ zrobił za nas całą robotę */
+  }
+  <Hero
+    title_1={homeData.baner.title_1}
+    title_2={homeData.baner.title_2}
+    description_1={homeData.baner.description_1}
+    description_2={homeData.baner.description_2}
+    button={homeData.baner.button}
+    button_icon={homeData.baner.button_icon}
+    bg_mobile={homeData.baner.bg_mobile}
+    bg_tablet={homeData.baner.bg_tablet}
+    ``
+    bg_desktop={homeData.baner.bg_desktop}
+  />
+
+  <div class="margin">
+    <Section bg_element={1} placement={"left"}>
+      {/* Wrzucamy od razu czystą tablicę przygotowaną przez GROQ */}
+      <Cards cards={homeData.cards} />
+    </Section>
+
+    <Section>
+      <Description title={homeData.about.title} text={homeData.about.text} />
+    </Section>
+
+    <Section bg_element={2} placement={"right"}>
+      <Title title={homeData.projects.title} />
+
+      <GalleryPreview images={homeData.projects.gallery} lang={currentLang} />
+
+      <Button
+        text={homeData.projects.button}
+        icon={homeData.projects.button_icon}
+        size="big"
+      />
+    </Section>
+
+    <Section bg_element={3} placement="mid">
+      <Contact
+        title_1={"Skontaktuj się"}
+        title_2={"z nami"}
+        description={"Wypełnij formularz poniżej."}
+        name={"Imię"}
+        email={"Email"}
+        phone={"Telefon"}
+        button={"Wyślij"}
+      />
+    </Section>
+  </div>
+</Layout>

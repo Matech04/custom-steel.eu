@@ -1,0 +1,142 @@
+---
+// src/layouts/ProjectsSite.astro
+import { PortableText } from "astro-portabletext";
+import PortableImage from "../components/PortableImage.astro";
+import { urlFor } from "../lib/SanityImageUrl";
+import { sanityClient } from "sanity:client";
+import Layout from "./Layout.astro";
+import Separator from "../components/Separator.astro";
+
+interface Props {
+  lang: string;
+  id: string;
+}
+
+const { lang, id } = Astro.props;
+
+// Pobieramy dane – dodajemy zabezpieczenie na wypadek, gdyby ID było błędne
+const data = await sanityClient.fetch(`*[_id == $id][0]`, { id });
+
+// Jeśli klient w ogóle nie stworzył dokumentu lub zapytanie zawiodło
+if (!data) {
+  return Astro.redirect("/404");
+}
+
+// 1. Bezpieczne wyciąganie tekstów (Fallbacks)
+const title = data.title?.[lang] || "Bez tytułu";
+const description = data.description?.[lang] || "";
+
+// 2. Bezpieczne SEO - sprawdzamy czy obiekt seoMeta w ogóle istnieje
+const seo_title = data.seoMeta?.title?.[lang] || title;
+const seo_description =
+  data.seoMeta?.description?.[lang] || description.substring(0, 160);
+
+// 3. Obrazy i Galerie
+const mainImage = data.image;
+const gallery = Array.isArray(data.gallery) ? data.gallery : [];
+
+// 4. Rich Text - PortableText sam w sobie nie wysypie się przy pustym polu,
+// ale warto sprawdzić, czy klucz języka istnieje
+const content = data.richText?.[lang] || null;
+
+const components = {
+  type: {
+    imageWithAlt: PortableImage, // Mapowanie typu ze schematu Sanity
+  },
+};
+---
+
+<Layout title={seo_title} metaDescription={seo_description} lang={lang}>
+  <article class="hero-margin project-container">
+    <header class="project-header">
+      <h1>{title}</h1>
+      {description && <p class="lead">{description}</p>}
+    </header>
+
+    {
+      mainImage?.asset && (
+        <div class="main-image">
+          <img
+            src={urlFor(mainImage).width(1200).quality(80).url()}
+            alt={mainImage.alt || title}
+          />
+        </div>
+      )
+    }
+
+    <Separator />
+
+    <section class="rich-text-content">
+      {
+        content ? (
+          <PortableText value={content} components={components} />
+        ) : (
+          <p class="no-content" />
+        )
+      }
+    </section>
+
+    {
+      gallery.length > 0 && (
+        <section class="project-gallery">
+          <div class="grid">
+            {gallery.map(
+              (img) =>
+                // Sprawdzamy czy konkretne zdjęcie w galerii ma asset
+                img?.asset && (
+                  <div class="gallery-item">
+                    <img
+                      src={urlFor(img).width(600).quality(75).url()}
+                      alt={img.alt || `Zdjęcie projektu ${title}`}
+                      loading="lazy"
+                    />
+                  </div>
+                ),
+            )}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</Layout>
+
+<style>
+  .project-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-inline: 2rem;
+    padding-top: 8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .project-header {
+    margin-bottom: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .main-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .project-gallery .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .gallery-item img {
+    width: 100%;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+  }
+  .gallery-item img:hover {
+    transform: scale(1.02);
+  }
+</style>

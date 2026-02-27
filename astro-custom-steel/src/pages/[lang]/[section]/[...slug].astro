@@ -1,0 +1,87 @@
+---
+import { sanityClient } from "sanity:client";
+
+import Project from "../../../layouts/Project.astro";
+import Article from "../../../layouts/Article.astro";
+import Category from "../../../layouts/ProjectsSite.astro";
+
+export async function getStaticPaths() {
+  const sites = ["projects_site", "articles_site"];
+  const sub_sites = ["project_categories", "articles", "projects"];
+  const langs = ["pl", "en", "de"];
+
+  //Pobierz kategorie
+  const subpages = await sanityClient.fetch(
+    `*[_type in $sub_sites ] {
+    "type": _type,
+    "slug": slug,
+    "category": category->slug,
+    "id": _id
+    }`,
+    { sub_sites },
+  );
+
+  const pages = await sanityClient.fetch(
+    `*[_type in $sites] {
+    "type": _type,
+    "slug": slug,
+
+  }`,
+    { sites },
+  );
+
+  const sectionSlugs = pages.reduce((acc, page) => {
+    acc[page.type] = page.slug;
+    return acc;
+  }, {});
+
+  const path = [];
+
+  subpages.forEach((site) => {
+    langs.forEach((lang) => {
+      const isProjectRelated =
+        site.type === "projects" || site.type === "project_categories";
+      const sectionKey = isProjectRelated ? "projects_site" : "articles_site";
+
+      const currentSectionSlug = sectionSlugs[sectionKey][lang];
+      const currentItemSlug = site.slug[lang];
+
+      if (!currentSectionSlug || !currentItemSlug) return;
+
+      let finalSlug = currentItemSlug;
+
+      if (site.type === "projects" && site.category[lang]) {
+        finalSlug = `${site.category[lang]}/${currentItemSlug}`;
+      }
+
+      path.push({
+        params: {
+          lang: lang,
+          section: currentSectionSlug,
+          slug: finalSlug,
+        },
+        props: { lang: lang, type: site.type, id: site.id },
+      });
+    });
+  });
+
+  return path;
+}
+const { type, lang, id } = Astro.props;
+
+let SelectedComponent;
+
+switch (type) {
+  case "project_categories":
+    SelectedComponent = Category;
+    break;
+  case "articles":
+    SelectedComponent = Article;
+    break;
+  case "projects":
+    SelectedComponent = Project;
+    break;
+}
+---
+
+<SelectedComponent lang={lang} id={id} />

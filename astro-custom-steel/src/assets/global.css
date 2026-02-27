@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --color-text: #FFFFFF;
+  --color-dark: #060C0F;
+  --color-light: #FFFFFF;
+  --color-accent: #DD635A;
+
+  --font-size: 16px;
+  --margin: 10vw;
+
+  --text-2xl: clamp(44px, 2.5vw + 1rem, 60px);
+  --text-xl: clamp(32px, 2vw + 1rem, 42px);
+  --text-lg: clamp(24px, 1.5vw + 1rem, 32px);
+  --text-md: clamp(20px, 1.25vw + 1rem, 24px);
+  --text-base: clamp(14px, 1vw + 1rem, 18px);
+  --text-xs: clamp(12px, 0.75vw + 1rem, 14px);
+  --text-xxs: clamp(10px, 0.625vw + 1rem, 12px);
+
+}
+
+* {
+  margin: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  border: none;
+}
+
+
+body {
+  background-color: var(--color-dark);
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: var(--color-text);
+  font-size: var(--font-size);
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit
+}
+
+.margin {
+  padding-inline: var(--margin);
+
+  @media(min-width: 1024px) {
+    padding-inline: calc(var(--margin) * 1.2);
+  }
+
+  @media (min-width: 1920px) {
+    padding-inline: calc(var(--margin) * 1.5);
+  }
+
+
+}
+
+.rich-text-content {
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hero-margin {
+  padding-top: 1rem;
+}
+
+.margin-top {
+  padding-top: 12rem;
+}
+
+
+.post img {
+  width: 100%;
+  height: auto;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+input,
+textarea,
+select,
+button {
+  outline: none;
+  border: none;
+  background: none;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Także przy focus */
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}

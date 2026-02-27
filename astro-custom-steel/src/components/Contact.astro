@@ -1,0 +1,414 @@
+---
+import { Icon } from "astro-icon/components";
+import Title from "./Title.astro";
+import Button from "./buttons/Button.astro";
+import parseIcon from "../lib/parseIcon";
+import { sanityClient } from "sanity:client";
+
+const { lang } = Astro.params;
+
+const data = await sanityClient.fetch(
+  `*[_type == "contact"][0] {
+    "title_1": title_1[$lang],
+    "title_2": title_2[$lang],
+    "description": description[$lang],
+    "name": name[$lang],
+    "email": email[$lang],
+    "phone": phone[$lang],
+    "button_text": button_text[$lang],
+
+  }`,
+  { lang },
+);
+
+const title_1 = data.title_1;
+const title_2 = data.title_2;
+const description = data.description;
+const name = data.name;
+const email = data.email;
+const phone = data.phone;
+const button_text = data.button_text;
+---
+
+<style>
+  /* Twój CSS z poprzedniej wiadomości pozostaje tutaj bez zmian */
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: start;
+    justify-content: space-between;
+    @media (min-width: 1024px) {
+      flex-direction: row;
+    }
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 550px;
+    @media (min-width: 1024px) {
+      width: 45%;
+    }
+  }
+  h3 {
+    font-size: var(--text-lg);
+  }
+  p {
+    font-size: var(--text-md);
+  }
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 550px;
+  }
+  .form input {
+    color: var(--color-text);
+    border-radius: 0.5rem;
+    width: 100%;
+    padding: 1rem;
+    background-color: transparent;
+    border: 0.1rem solid white;
+    font-size: var(--text-base);
+  }
+  .form textarea {
+    width: 100%;
+    height: 15rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    color: var(--color-text);
+    border: 0.1rem solid white;
+    font-size: var(--text-base);
+  }
+  .error {
+    color: red;
+    font-size: var(--text-xs);
+    padding-left: 0.5rem;
+  }
+  .success {
+    color: green;
+    font-size: var(--text-base);
+    padding-top: 1rem;
+    display: none;
+  }
+  .button {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    background: var(--color-accent);
+    color: var(--color-text);
+    align-items: center;
+    padding-block: 1rem;
+    padding-inline: 2rem;
+    margin-top: 1rem;
+    margin-right: auto;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .svg {
+    color: var(--color-accent);
+    width: 2rem;
+  }
+  .icon {
+    width: 1.5rem;
+    height: auto;
+  }
+  .file_input {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+</style>
+
+<div id="contact">
+  <Title title={title_1} />
+
+  <div class="section">
+    <div class="text">
+      <h3>{title_2}</h3>
+      <p>{description}</p>
+    </div>
+
+    <form
+      id="form"
+      class="form"
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      enctype="multipart/form-data"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <p style="display: none;">
+        <label
+          >Don’t fill this out if you're human: <input
+            name="bot-field"
+          /></label
+        >
+      </p>
+
+      <input name="name" placeholder={name} />
+      <p id="name_error" class="error"></p>
+
+      <input name="email" type="email" placeholder={email} />
+      <p id="email_error" class="error"></p>
+
+      <input name="phone" type="tel" placeholder={phone} />
+      <p id="phone_error" class="error"></p>
+
+      <div style="position: relative;">
+        <textarea name="textarea"></textarea>
+        <label class="file_input">
+          <input
+            style="display:none"
+            type="file"
+            accept=".png,.jpg,.jpeg,.avif,.webp"
+            multiple
+            id="fileInput"
+            name="images"
+          />
+          <p id="file_error" class="error text-base"></p>
+          <p id="imageCounter"></p>
+          <svg
+            id="imageSvg"
+            class="svg"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            ></path>
+          </svg>
+        </label>
+      </div>
+
+      <button type="submit" id="submitBtn" class="button">
+        <p id="btnText">{button_text}</p>
+        <Icon name={parseIcon("person")} class="icon" />
+      </button>
+      <p id="success_message" class="success">
+        Wiadomość została wysłana pomyślnie!
+      </p>
+      <p id="server_error" class="error"></p>
+    </form>
+  </div>
+</div>
+
+<script>
+  // 2. Otypowanie tłumaczeń i języków
+  type LangCode = "pl" | "en" | "de";
+
+  type TranslationKeys = {
+    "@": string;
+    length: string;
+    max: string;
+    type: string;
+    size: string;
+    text_long: string;
+    sending: string;
+    success: string;
+  };
+
+  const translations: Record<LangCode, TranslationKeys> = {
+    pl: {
+      "@": "Niepoprawny e-mail.",
+      length: "Pole nie może być puste.",
+      max: "Max 3 zdjęcia.",
+      type: "Niepoprawny typ pliku.",
+      size: "Maksymalna wielkość zdjęcia to 5mb.",
+      text_long: "Maksymalnie 1000 znaków.",
+      sending: "Wysyłanie...",
+      success: "Wiadomość wysłana!",
+    },
+    en: {
+      "@": "Invalid email.",
+      length: "Field cannot be empty.",
+      max: "Max 3 photos.",
+      type: "Invalid file type.",
+      size: "Maximum photo size is 5MB.",
+      text_long: "Maximum 1000 characters.",
+      sending: "Sending...",
+      success: "Message sent!",
+    },
+    de: {
+      "@": "Ungültige E-Mail.",
+      length: "Feld darf nicht leer sein.",
+      max: "Maximal 3 Fotos.",
+      type: "Ungültiger Dateityp.",
+      size: "Maximale Fotogröße beträgt 5 MB.",
+      text_long: "Maximal 1000 Zeichen.",
+      sending: "Senden...",
+      success: "Nachricht gesendet!",
+    },
+  };
+
+  const url = window.location.href;
+  let lang: LangCode = "pl";
+  if (url.includes("/de/")) lang = "de";
+  else if (url.includes("/en/")) lang = "en";
+
+  const maxSize = 5 * 1024 * 1024; // 5mb
+
+  // 3. Otypowanie elementów DOM z uwzględnieniem faktu, że mogą być null
+  const fileInput = document.getElementById(
+    "fileInput",
+  ) as HTMLInputElement | null;
+  const svg = document.getElementById("imageSvg") as SVGSVGElement | null;
+  const imageCounter = document.getElementById(
+    "imageCounter",
+  ) as HTMLParagraphElement | null;
+
+  fileInput?.addEventListener("change", () => {
+    // Odwołujemy się do plików używając opcjonalnego łańcuchowania (?)
+    const fileCount = fileInput.files?.length || 0;
+
+    if (fileCount > 0) {
+      if (svg) {
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "currentColor");
+        svg.setAttribute("stroke", "1");
+        svg.innerHTML = `<path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />`;
+      }
+      if (imageCounter) imageCounter.innerText = fileCount.toString();
+    } else {
+      if (svg) {
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />`;
+      }
+      if (imageCounter) imageCounter.innerText = "";
+    }
+  });
+
+  const form = document.getElementById("form") as HTMLFormElement | null;
+  const submitBtn = document.getElementById(
+    "submitBtn",
+  ) as HTMLButtonElement | null;
+  const btnText = document.getElementById(
+    "btnText",
+  ) as HTMLParagraphElement | null;
+  const successMessage = document.getElementById(
+    "success_message",
+  ) as HTMLParagraphElement | null;
+
+  // Otypowany słownik z błędami
+  const errors: Record<string, HTMLElement | null> = {
+    name: document.getElementById("name_error"),
+    email: document.getElementById("email_error"),
+    phone: document.getElementById("phone_error"),
+    file: document.getElementById("file_error"),
+    server: document.getElementById("server_error"),
+  };
+
+  // 4. Otypowanie eventu i FormData
+  form?.addEventListener("submit", async (event: SubmitEvent) => {
+    event.preventDefault();
+    if (!form) return;
+
+    const formData = new FormData(form);
+    formData.append("lang", lang);
+
+    if (successMessage) successMessage.style.display = "none";
+    Object.values(errors).forEach((el) => {
+      if (el) el.textContent = "";
+    });
+
+    const files = fileInput?.files;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let hasErrors = false;
+
+    // Pobieranie wartości z FormData (wymaga rzutowania na string)
+    const emailVal = formData.get("email")?.toString() || "";
+    if (!emailVal.length) {
+      if (errors.email) errors.email.textContent = translations[lang]["length"];
+      hasErrors = true;
+    } else if (!emailPattern.test(emailVal)) {
+      if (errors.email) errors.email.textContent = translations[lang]["@"];
+      hasErrors = true;
+    }
+
+    const nameVal = formData.get("name")?.toString() || "";
+    if (!nameVal.length) {
+      if (errors.name) errors.name.textContent = translations[lang]["length"];
+      hasErrors = true;
+    }
+
+    const phoneVal = formData.get("phone")?.toString() || "";
+    if (!phoneVal.length) {
+      if (errors.phone) errors.phone.textContent = translations[lang]["length"];
+      hasErrors = true;
+    }
+
+    const textareaVal = formData.get("textarea")?.toString() || "";
+    if (textareaVal.length > 1000) {
+      if (errors.file)
+        errors.file.textContent = translations[lang]["text_long"];
+      hasErrors = true;
+    }
+
+    if (files && files.length > 3) {
+      if (errors.file) errors.file.textContent = translations[lang]["max"];
+      hasErrors = true;
+    } else if (files) {
+      // Dla FileList używamy Array.from aby uniknąć błędów iteracji w TS
+      Array.from(files).forEach((file) => {
+        if (file.size > 0 && !file.type.startsWith("image/")) {
+          if (errors.file) errors.file.textContent = translations[lang]["type"];
+          hasErrors = true;
+        } else if (file.size > maxSize) {
+          if (errors.file) errors.file.textContent = translations[lang]["size"];
+          hasErrors = true;
+        }
+      });
+    }
+
+    if (!hasErrors) {
+      if (submitBtn) submitBtn.disabled = true;
+      const originalBtnText = btnText?.innerText || "";
+      if (btnText) btnText.innerText = translations[lang]["sending"];
+
+      try {
+        const response = await fetch("/", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        form.reset();
+        if (imageCounter) imageCounter.innerText = "";
+        if (successMessage) {
+          successMessage.innerText = translations[lang]["success"];
+          successMessage.style.display = "block";
+        }
+      } catch (error) {
+        console.error(`Error:`, error);
+        if (errors.server)
+          errors.server.textContent =
+            "Wystąpił błąd podczas wysyłania. Spróbuj ponownie później.";
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+        if (btnText) btnText.innerText = originalBtnText;
+      }
+    }
+  });
+</script>

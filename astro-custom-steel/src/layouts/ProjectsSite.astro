@@ -1,0 +1,37 @@
+---
+import { sanityClient } from "sanity:client";
+import Card from "../components/cards/ProjectCard.astro";
+import Section from "../components/Section.astro";
+import Title from "../components/Title.astro";
+import Layout from "./Layout.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Badge from "../components/Badge.astro";
+import ProjectsList from "./ProjectsList.astro";
+
+const { lang, section } = Astro.params;
+
+const { id } = Astro.props;
+
+// 1. ZAPYTANIE GROQ
+const query = id
+  ? `*[_type == "projects" && category._ref == $id] {
+      "title": title[$lang],
+      "mainImage": image,
+      "categoryTitle": category->title[$lang],
+      "categorySlug": category->slug[$lang],
+      "slug": slug[$lang],
+      "id": _id
+    }`
+  : `*[_type == "projects"] {
+      "title": title[$lang],
+      "mainImage": image,
+      "categoryTitle": category->title[$lang],
+      "categorySlug": category->slug[$lang],
+      "slug": slug[$lang],
+      "id": _id
+    }`;
+
+const projectsList = await sanityClient.fetch(query, { lang, id });
+---
+
+<ProjectsList projectsList={projectsList} currentCategory={id} />

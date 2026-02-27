@@ -1,0 +1,97 @@
+---
+import { sanityClient } from "sanity:client";
+import Card from "../components/cards/ArticleCard.astro"; // Stworzymy lub zaadaptujemy tę kartę
+import Section from "../components/Section.astro";
+import Title from "../components/Title.astro";
+import Layout from "./Layout.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const { lang, section } = Astro.params;
+
+// 1. ZAPYTANIE GROQ - pobieramy artykuły
+const query = `*[_type == "articles"] | order(_createdAt desc) {
+  "title": title[$lang],
+  "mainImage": image,
+  "description": description[$lang],
+  "slug": slug[$lang],
+  "id": _id
+}`;
+
+const articlesList = await sanityClient.fetch(query, { lang });
+
+// 2. Pobieramy dane strony głównej artykułów (tytuł sekcji, opis itp.)
+const articlesSite = await sanityClient.fetch(
+  `*[_type == "articles_site"][0] { 
+    title,
+    description,
+    seoMeta
+  }`,
+);
+
+// Fallbacki dla SEO
+const seoTitle = articlesSite?.seoMeta?.title?.[lang] || "Blog | Custom Steel";
+const seoDesc =
+  articlesSite?.seoMeta?.description?.[lang] || "Porady i inspiracje";
+---
+
+<Layout title={seoTitle} metaDescription={seoDesc} lang={lang}>
+  <div class="margin hero-margin">
+    <Section bg_element={0}>
+      <Title title={articlesSite?.title?.[lang] || "Blog"} />
+
+      {
+        articlesSite?.description?.[lang] && (
+          <span class="section-desc">{articlesSite.description[lang]}</span>
+        )
+      }
+
+      <div class="articles-grid">
+        {
+          articlesList.length !== 0 ? (
+            articlesList.map((article: any) => (
+              <Card
+                main_image={article.mainImage}
+                title={article.title}
+                description={article.description}
+                lang={lang}
+                slug={article.slug}
+                href={getRelativeLocaleUrl(lang, `${section}/${article.slug}`)}
+              />
+            ))
+          ) : (
+            <p>Wkrótce pojawią się tutaj nowe artykuły.</p>
+          )
+        }
+      </div>
+    </Section>
+  </div>
+</Layout>
+
+<style>
+  div {
+    margin-top: 6rem;
+  }
+
+  .section-desc {
+    display: block;
+    margin-top: 1rem;
+    max-width: 600px;
+    line-height: 1.6;
+    color: #444;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 3rem; /* Nieco większy odstęp dla artykułów */
+    margin-top: 4rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1280px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

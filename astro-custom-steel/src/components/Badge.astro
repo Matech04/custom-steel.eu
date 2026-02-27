@@ -1,0 +1,22 @@
+---
+const { title, href, focus = false } = Astro.props;
+---
+
+<a href={href} class={focus ? "focus" : ""}>{title}</a>
+
+<style>
+  a {
+    cursor: pointer;
+
+    border-radius: 5rem;
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+
+    border: solid 3px;
+    border-color: var(--color-accent);
+  }
+
+  .focus {
+    background-color: var(--color-accent);
+  }
+</style>

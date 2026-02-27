@@ -1,0 +1,151 @@
+---
+import { urlFor } from "../../lib/SanityImageUrl";
+
+const { lang = "pl" } = Astro.params;
+const {
+  main_image,
+  title = "Bez tytułu",
+  description = "",
+  href = "#",
+} = Astro.props;
+
+// Słowniczek dla przycisków
+const t = {
+  pl: { read: "Czytaj", more: "Zobacz więcej" },
+  en: { read: "Read", more: "View more" },
+  de: { read: "Lesen", more: "Mehr sehen" },
+}[lang] || { read: "Read", more: "View more" };
+---
+
+<a href={href} class="article-card">
+  <div class="image-wrapper">
+    {
+      main_image?.asset ? (
+        <img
+          src={urlFor(main_image).width(800).height(500).url()}
+          alt={main_image.alt || title}
+          loading="lazy"
+        />
+      ) : (
+        <div class="placeholder" />
+      )
+    }
+    <div class="read-more-badge">{t.read}</div>
+  </div>
+
+  <div class="content">
+    <h3 class="article-title">{title}</h3>
+    {description && <p class="article-description">{description}</p>}
+    <span class="cta-link">{t.more} <span class="arrow">→</span></span>
+  </div>
+</a>
+
+<style>
+  .article-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* Dodajemy tło karty lub subtelne obramowanie, aby odciąć ją od tła strony */
+    border: 3px solid #1a1a1a;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .article-card:hover {
+    border-color: #333; /* Rozjaśnia ramkę przy hoverze */
+    transform: translateY(-5px);
+    background: #111;
+  }
+
+  .image-wrapper {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: #111;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+    opacity: 0.9; /* Lekko przyciemniamy obraz, by pasował do klimatu */
+  }
+
+  .article-card:hover img {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  .read-more-badge {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: #fff;
+    color: #000;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+
+  .article-card:hover .read-more-badge {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .content {
+    padding: 2rem; /* Większy padding dla luksusowego wyglądu */
+  }
+
+  .article-title {
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #ffffff; /* Czysta biel dla nagłówka */
+    transition: color 0.3s ease;
+  }
+
+  .article-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #a0a0a0; /* Jasnoszary dla czytelności na ciemnym tle */
+    margin: 0 0 1.5rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .cta-link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .article-card:hover .arrow {
+    transform: translateX(5px);
+  }
+
+  .placeholder {
+    width: 100%;
+    height: 100%;
+    background: #111;
+  }
+</style>

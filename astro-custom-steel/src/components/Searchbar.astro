@@ -1,0 +1,52 @@
+---
+import { Icon } from "astro-icon/components";
+import parseIcon from "../lib/parseIcon";
+
+const searchValue = Astro.url.searchParams.get("search") || "";
+---
+
+<form method="GET">
+  <input id="input" name="search" placeholder="Wyszukaj" value={searchValue} />
+  <button id="button"><Icon name={parseIcon("person")} /></button>
+</form>
+
+<style>
+  form {
+    display: flex;
+    padding-inline: 1rem;
+    padding-block: 0.5rem;
+    border: solid 2px white;
+    border-radius: 10px;
+    text: white;
+    background-color: var(--color-dark);
+    margin-bottom: 3rem;
+    font-size: var(--text-md);
+  }
+
+  input {
+    width: 100%;
+    background-color: var(--color-dark);
+    font-size: var(--text-md);
+    color: white;
+  }
+
+  input::selection {
+    border: none;
+  }
+  #button {
+    background-color: var(--color-accent);
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  #button:hover {
+    cursor: pointer;
+  }
+
+  svg {
+    color: white;
+    font-size: 1.5rem;
+  }
+</style>

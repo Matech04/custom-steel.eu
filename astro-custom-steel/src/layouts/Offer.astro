@@ -1,0 +1,168 @@
+---
+import Layout from "./Layout.astro";
+import { PortableText } from "astro-portabletext";
+import PortableImage from "../components/PortableImage.astro";
+import { sanityClient } from "sanity:client";
+
+const { lang } = Astro.props;
+
+const data = await sanityClient.fetch(
+  `*[_type == "offer"][0] {
+    "title": title[$lang],
+    "description": description[$lang],
+    "slug": slug[$lang],
+    "richText": richText[$lang],
+    seoMeta {
+      "title": title[$lang],
+      "description": description[$lang]
+    }
+  }`,
+  { lang },
+);
+
+const components = {
+  type: {
+    imageWithAlt: PortableImage,
+  },
+};
+---
+
+<Layout
+  lang={lang}
+  title={data?.seoMeta?.title || data?.title}
+  description={data?.seoMeta?.description || data?.description}
+>
+  <main class="offer-container">
+    <header class="offer-header">
+      <span class="label"
+        >{
+          lang === "pl"
+            ? "Nasza Oferta"
+            : lang === "de"
+              ? "Unser Angebot"
+              : "Our Offer"
+        }</span
+      >
+      <h1>{data?.title || "Brak tytułu"}</h1>
+      {data?.description && <p class="lead">{data.description}</p>}
+    </header>
+
+    <div class="content-wrapper">
+      {
+        data?.richText && (
+          <div class="prose">
+            <PortableText value={data.richText} components={components} />
+          </div>
+        )
+      }
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .offer-container {
+    max-width: 900px; /* Złoty środek między artykułem a projektem */
+    margin: 0 auto;
+    padding-inline: 2rem;
+    padding-bottom: 8rem;
+    color: #fff;
+    padding-top: 12rem;
+  }
+
+  .offer-header {
+    margin-bottom: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .label {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 4px;
+    color: #666;
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 8vw, 5rem);
+    line-height: 1;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .lead {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: #a0a0a0;
+    max-width: 650px;
+    font-weight: 300;
+  }
+
+  /* Stylizacja treści PortableText */
+  .prose {
+    line-height: 1.8;
+    font-size: 1.15rem;
+    color: #d1d1d1;
+  }
+
+  .prose :global(h2) {
+    font-size: 2.2rem;
+    color: #fff;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    /* Subtelny akcent dekoracyjny dla Custom Steel */
+    border-bottom: 1px solid #1a1a1a;
+    padding-bottom: 1rem;
+    display: block;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 2rem;
+  }
+
+  .prose :global(strong) {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .prose :global(ul) {
+    margin: 2rem 0;
+    padding-left: 1.5rem;
+    list-style: none; /* Customowe listy */
+  }
+
+  .prose :global(li) {
+    margin-bottom: 1rem;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  /* Customowa "stalowa" kropka listy */
+  .prose :global(li::before) {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 6px;
+    height: 6px;
+    background-color: #333;
+    border-radius: 50%;
+  }
+
+  /* Odstępy dla obrazków wewnątrz tekstu */
+  .prose :global(figure) {
+    margin: 4rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .offer-header {
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import Cube_1 from "../assets/cubes/Cube_1.svg";
+import Cube_2 from "../assets/cubes/Cube_2.svg";
+import Cube_3 from "../assets/cubes/Cube_3.svg";
+
+const { bg_element = 0, placement = "left" } = Astro.props;
+
+let Element;
+
+switch (bg_element) {
+  case 0:
+    break;
+  case 1:
+    Element = Cube_1;
+    break;
+  case 2:
+    Element = Cube_2;
+    break;
+  case 3:
+    Element = Cube_3;
+}
+---
+
+<style>
+  div {
+    margin-top: 5rem;
+    position: relative;
+  }
+
+  div svg {
+    position: absolute;
+    z-index: -1;
+  }
+
+  .left {
+    left: -30%;
+  }
+
+  .mid {
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+  }
+
+  .right {
+    right: 0%;
+  }
+</style>
+
+<div>
+  {Element ? <Element class={placement} /> : ""}
+  <slot />
+</div>

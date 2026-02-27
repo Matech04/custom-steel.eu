@@ -1,0 +1,101 @@
+---
+import { urlFor } from "../../lib/SanityImageUrl";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const { lang = "de" } = Astro.params;
+
+// Dodajemy typowanie i wartości domyślne dla bezpieczeństwa
+const {
+  main_image,
+  category = "Realizacja",
+  title = "Bez tytułu",
+  href = "",
+} = Astro.props;
+---
+
+<a href={href} class="project-card">
+  <div class="image-wrapper">
+    {
+      main_image && (
+        <img
+          src={urlFor(main_image).width(800).height(1000).url()}
+          alt={main_image.alt || title}
+          loading="lazy"
+        />
+      )
+    }
+    <div class="overlay">
+      <span class="category-tag">{category}</span>
+      <h3 class="project-title">{title}</h3>
+    </div>
+  </div>
+</a>
+
+<style>
+  .project-card {
+    text-decoration: none;
+    display: block;
+    width: 100%;
+  }
+
+  .image-wrapper {
+    position: relative;
+    aspect-ratio: 4 / 5; /* Złoty podział dla kart pionowych */
+    overflow: hidden;
+    background-color: #1a1a1a; /* Placeholder zanim załaduje się zdjęcie */
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .project-card:hover img {
+    transform: scale(1.08);
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    /* Gradient poprawiający czytelność tekstu na jasnych zdjęciach */
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.3) 40%,
+      transparent 100%
+    );
+    color: white;
+  }
+
+  .category-tag {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+    font-weight: 300;
+  }
+
+  .project-title {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  /* Subtelny efekt wysunięcia tekstu przy hoverze */
+  .project-title {
+    transform: translateY(0);
+    transition: transform 0.4s ease;
+  }
+
+  .project-card:hover .project-title {
+    transform: translateY(-5px);
+  }
+</style>

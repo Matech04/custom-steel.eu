@@ -1,0 +1,97 @@
+---
+import "../assets/global.css";
+import { sanityClient } from "sanity:client";
+import Footer from "../components/Footer.astro";
+import Navbar from "../components/Navbar.astro";
+import Contact from "../components/Contact.astro";
+
+const { title, metaDescription, lang = "pl" } = Astro.props;
+
+// Dynamicznie budujemy URL dla tagu canonical (podmień na swoją domenę w produkcji)
+const currentUrl = Astro.url.href;
+
+// 1. Definiujemy zapytanie GROQ
+const navQuery = `*[_type == "navigation"][0] {
+  "logo": logo_mobile,
+  "logo_desktop": logo_desktop,
+  "links": navLinks[] {
+    "id": id,
+    "text": text[$lang],
+    "href": select(
+      id == "home" => "",
+      href[$lang]
+    )
+  },
+  "labels": {
+    "nav_open_label": labels.nav_open[$lang],
+    "nav_close_label": labels.nav_close[$lang]
+  }
+}`;
+
+// 2. Pobieramy dane z Sanity
+const navData = await sanityClient.fetch(navQuery, { lang });
+---
+
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="https://cdn.custom-steel.eu/9cf2f7ef-973e-4bba-bfb2-0dfe84ec431e.svg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={metaDescription} />
+
+    <link rel="canonical" href={currentUrl} />
+
+    <meta property="og:site_name" content="Custom Steel" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:locale"
+      content={lang === "en" ? "en_US" : lang === "de" ? "de_DE" : "pl_PL"}
+    />
+    <meta property="og:url" content={currentUrl} />
+    <meta
+      property="og:image"
+      content="https://cdn.custom-steel.eu/8712c6e9-533d-4f64-a0c8-1ed9ab0996fb.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Custom Steel - Professional steel construction and manufacturing"
+    />
+
+    <meta name="contact:phone_number" content="+48535044105" />
+    <meta name="contact:email" content="office@custom-steel.eu" />
+    <meta name="geo.region" content="PL-LU" />
+    <meta name="geo.placename" content="Krzeszyce" />
+    <meta name="geo.position" content="52.58702952011626;15.006045660196573" />
+    <meta name="ICBM" content="52.58702952011626, 15.006045660196573" />
+
+    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent" />
+  </head>
+  <body id="body">
+    <Navbar
+      links={navData.links}
+      logo={navData.logo}
+      logo_desktop={navData.logo_desktop}
+      labels={navData.labels}
+      lang={lang}
+      url={currentUrl}
+    />
+
+    <slot />
+
+    <Footer />
+  </body>
+</html>
+<style></style>

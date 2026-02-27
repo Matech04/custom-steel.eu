@@ -1,0 +1,50 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  text: string;
+  icon: string;
+}
+
+const { text, icon } = Astro.props;
+---
+
+<style>
+  div {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-accent);
+    border-radius: 0.5rem;
+    padding: clamp(1rem, 4vw, 1.5rem);
+    text-align: center;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+    max-width: 30rem;
+  }
+
+  .text_wrapper {
+    gap: 1rem;
+  }
+  div svg {
+    padding: 0;
+    width: 2rem;
+    height: auto;
+    margin-bottom: auto;
+  }
+
+  h2 {
+    font-size: var(--text-md);
+  }
+
+  p {
+    font-size: var(--text-sm);
+  }
+</style>
+
+<div>
+  <Icon name={icon} />
+  <div class="text_wrapper">
+    <p>{text}</p>
+  </div>
+</div>

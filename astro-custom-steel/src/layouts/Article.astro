@@ -1,0 +1,184 @@
+---
+// src/layouts/ArticleSite.astro
+import { PortableText } from "astro-portabletext";
+import PortableImage from "../components/PortableImage.astro";
+import { urlFor } from "../lib/SanityImageUrl";
+import { sanityClient } from "sanity:client";
+import Layout from "./Layout.astro";
+import Separator from "../components/Separator.astro";
+
+interface Props {
+  lang: string;
+  id: string;
+}
+
+const { lang, id } = Astro.props;
+
+// Pobieramy dane artykułu
+const data = await sanityClient.fetch(`*[_id == $id][0]`, { id });
+
+if (!data) {
+  return Astro.redirect("/404");
+}
+
+// 1. Bezpieczne teksty
+const title = data.title?.[lang] || "Bez tytułu";
+const description = data.description?.[lang] || "";
+
+// 2. SEO
+const seo_title = data.seoMeta?.title?.[lang] || title;
+const seo_description =
+  data.seoMeta?.description?.[lang] || description.substring(0, 160);
+
+// 3. Obraz główny i treść
+const mainImage = data.image;
+const content = data.richText?.[lang] || null;
+
+const components = {
+  type: {
+    imageWithAlt: PortableImage,
+  },
+};
+---
+
+<Layout title={seo_title} metaDescription={seo_description} lang={lang}>
+  <article class="hero-margin article-container">
+    <header class="article-header">
+      <span class="category-label">Blog / Custom Steel</span>
+      <h1>{title}</h1>
+      {description && <p class="lead-text">{description}</p>}
+    </header>
+
+    {
+      mainImage?.asset && (
+        <div class="main-image">
+          <img
+            src={urlFor(mainImage).width(1200).quality(85).url()}
+            alt={mainImage.alt || title}
+          />
+        </div>
+      )
+    }
+
+    <Separator />
+
+    <section class="rich-text-content">
+      {
+        content ? (
+          <div class="prose">
+            <PortableText value={content} components={components} />
+          </div>
+        ) : (
+          <p class="no-content">Treść w przygotowaniu...</p>
+        )
+      }
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .article-container {
+    max-width: 800px; /* Węższa kolumna dla lepszej czytelności tekstu */
+    margin: 0 auto;
+    padding-inline: 2rem;
+    padding-top: 8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .article-header {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .category-label {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #666;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.1;
+    color: #fff;
+  }
+
+  .lead-text {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #a0a0a0;
+    font-style: italic;
+    border-left: 2px solid #fff;
+    padding-left: 1.5rem;
+  }
+
+  .main-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  /* Stylizacja treści z PortableText */
+  .prose {
+    line-height: 1.8;
+    font-size: 1.15rem;
+    color: #d1d1d1;
+  }
+
+  .prose :global(h2) {
+    font-size: 2rem;
+    color: #fff;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .prose :global(strong) {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .prose :global(ul) {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    list-style: square;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .article-footer {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 6rem;
+  }
+
+  .back-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+  }
+
+  .back-link:hover {
+    opacity: 0.7;
+  }
+
+  .no-content {
+    color: #666;
+    font-style: italic;
+  }
+</style>

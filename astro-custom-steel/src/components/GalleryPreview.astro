@@ -1,0 +1,79 @@
+---
+import { Image } from "astro:assets";
+import { urlFor } from "../lib/SanityImageUrl";
+
+const { images, lang } = Astro.props;
+
+---
+
+<style>
+  .images {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+
+    @media (min-width: 1280px) {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-rows: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .images img:nth-child(1){
+    grid-column: 1 / span 3;
+    grid-row: 1 / span 3;
+  }
+
+  .images img:nth-child(2){
+
+      grid-column: span 3;
+      grid-row: span 3;
+
+    @media (min-width: 1280px){
+      grid-column: 4 / span 2;
+      grid-row: 1 / span 2;
+    }
+  }
+
+  .images img:nth-child(3){
+    grid-column: span 2;
+
+    @media (min-width: 1280px){
+      grid-column: span 1;
+      grid-row: span: 1;
+    }
+  }
+
+  .images img:nth-child(4){
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+</style>
+
+<div class="images">
+  {
+    images &&
+    images.map((item: any) => {
+      // 1. Wyciągamy URL tylko jeśli image istnieje, żeby uniknąć błędu "source: null"
+      const imgUrl = item.image ? urlFor(item.image).auto("format").url() : null;
+
+      // 2. Jeśli nie ma URL, nie renderujemy obrazka
+      if (!imgUrl) return null;
+
+      return (
+        <img 
+          src={imgUrl} 
+          alt={item.alt || "Zdjęcie realizacji Custom-Steel"} 
+        />
+      );
+    })
+  }
+</div>

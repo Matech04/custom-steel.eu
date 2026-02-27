@@ -1,0 +1,34 @@
+---
+import Card from "./Card.astro";
+import parseIcon from "../../lib/parseIcon";
+
+interface Card {
+  text: string;
+  icon: string;
+}
+
+interface Props {
+  cards: Array<Card>;
+}
+
+const { cards } = Astro.props;
+---
+
+<style>
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 4vw;
+    margin-top: -15vh;
+    align-items: center;
+
+    @media (min-width: 1280px) {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+</style>
+
+<div>
+  {cards.map((card) => <Card text={card.text} icon={parseIcon(card.icon)} />)}
+</div>

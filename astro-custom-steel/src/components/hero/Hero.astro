@@ -1,0 +1,89 @@
+---
+import Button from "../buttons/Button.astro";
+
+import { urlFor } from "../../lib/SanityImageUrl.ts";
+import type { SanityImageObject } from "@sanity/image-url";
+
+const {
+  title_1,
+  title_2,
+  description_1,
+  description_2,
+  button,
+  button_icon,
+  bg_mobile,
+  bg_tablet,
+  bg_desktop,
+} = Astro.props;
+
+const bg_mob = `url(${urlFor(bg_mobile).url()})`;
+const bg_tab = `url(${urlFor(bg_tablet).url()})`;
+const bg_desk = `url(${urlFor(bg_desktop).url()})`;
+---
+
+<style define:vars={{ bg_mob, bg_tab, bg_desk }}>
+  .bg {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: start;
+  }
+
+  .bg-image {
+    background-image:
+      linear-gradient(to bottom, rgba(255, 255, 255, 0) 90%, #060c0f 100%),
+      var(--bg_mob);
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .bg-image {
+      background-image:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0) 90%, #060c0f 100%),
+        var(--bg_tab);
+    }
+  }
+
+  @media only screen and (min-width: 1280px) {
+    .bg-image {
+      background-image:
+        linear-gradient(to bottom, rgba(255, 255, 255, 0) 90%, #060c0f 100%),
+        var(--bg_desk);
+    }
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    gap: clamp(24px, 3vw + 1.5rem, 84px);
+
+    @media (min-width: 1024px) {
+      width: 60%;
+    }
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+  }
+
+  p {
+    font-size: var(--base);
+  }
+</style>
+
+<div class="bg-image bg margin">
+  <div class="text">
+    <h1>
+      {title_1}<br /><strong>{title_2}</strong>
+    </h1>
+    <p>
+      {description_1}
+      <span style="color: var(--color-accent);">{description_2}</span>
+    </p>
+    <Button text={button} icon={button_icon} />
+  </div>
+</div>

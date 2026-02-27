@@ -1,0 +1,14 @@
+---
+const { size } = Astro.props;
+---
+
+<hr />
+
+<style define:vars={{ size }}>
+  hr {
+    width: var(--size);
+    margin-block: 1rem;
+    border: 0.2rem solid var(--color-accent);
+    border-radius: 5rem;
+  }
+</style>
