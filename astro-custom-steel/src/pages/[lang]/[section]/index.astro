@@ -55,6 +55,8 @@ export async function getStaticPaths() {
   return paths;
 }
 
+export const prerender = true;
+
 // Odbieramy dane w komponencie
 const { lang, section } = Astro.params;
 const { type } = Astro.props;

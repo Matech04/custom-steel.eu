@@ -67,6 +67,9 @@ export async function getStaticPaths() {
 
   return path;
 }
+
+export const prerender = true;
+
 const { type, lang, id } = Astro.props;
 
 let SelectedComponent;

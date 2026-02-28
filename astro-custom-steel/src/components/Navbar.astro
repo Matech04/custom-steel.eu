@@ -12,7 +12,7 @@ const langs = ["pl", "en", "de"];
  * Jeśli href to "o-nas", a język to "en", zwróci "/en/about-us" (jeśli tak wpiszesz w Sanity).
  */
 const getFormattedHref = (linkHref: string) => {
-  if (linkHref === "/") `/${lang}`;
+  if (linkHref === "/") return `/${lang}`;
   return `/${lang}/${linkHref}`;
 };
 ---
@@ -166,14 +166,14 @@ const getFormattedHref = (linkHref: string) => {
 <nav id="nav" role="navigation">
   <div id="menu" class="menu margin hidden">
     <a class="logo" href={`/${lang}`} aria-label="Navigate to home page">
-      <Image
+      <img
         src={urlFor(logo).url()}
         alt="Logo Mobile"
         width="32"
         height="38"
         class="logo_mobile"
       />
-      <Image
+      <img
         src={urlFor(logo_desktop).url()}
         alt="Logo Desktop"
         width="240"

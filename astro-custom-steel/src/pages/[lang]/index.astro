@@ -18,6 +18,8 @@ export async function getStaticPaths() {
   ];
 }
 
+export const prerender = true;
+
 const currentLang = Astro.params.lang || "en";
 
 // --------------------------------------------------------
