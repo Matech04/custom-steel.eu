@@ -9,6 +9,7 @@ import Title from "../../components/Title.astro";
 import GalleryPreview from "../../components/GalleryPreview.astro";
 import Button from "../../components/buttons/Button.astro";
 import Contact from "../../components/Contact.astro";
+import { undefined } from "astro:schema";
 
 export async function getStaticPaths() {
   return [
@@ -20,13 +21,13 @@ export async function getStaticPaths() {
 
 export const prerender = true;
 
-const currentLang = Astro.params.lang || "en";
+const currentLang = Astro.params?.lang || "en";
 
 // --------------------------------------------------------
 // ZAPYTANIE GROQ Z PROJEKCJĄ I ZMIENNĄ JĘZYKOWĄ
 // --------------------------------------------------------
 const query = `*[_type == "home"][0] {
-  "seoMeta": meta[$lang],
+  "seoMeta": seoMeta,
   
   "baner": {
     "bg_mobile": baner.heroImageMobile,
@@ -76,11 +77,13 @@ const query = `*[_type == "home"][0] {
 
 // Przekazujemy aktualny język do zapytania pod kluczem 'lang'
 const homeData = await sanityClient.fetch(query, { lang: currentLang });
+
+const { lang } = Astro.params;
 ---
 
 <Layout
-  title={homeData.seoMeta}
-  metaDescription={homeData.seoMeta}
+  title={homeData.seoMeta.title[lang]}
+  metaDescription={homeData.seoMeta.description[lang]}
   lang={currentLang}
 >
   {
@@ -95,7 +98,6 @@ const homeData = await sanityClient.fetch(query, { lang: currentLang });
     button_icon={homeData.baner.button_icon}
     bg_mobile={homeData.baner.bg_mobile}
     bg_tablet={homeData.baner.bg_tablet}
-    ``
     bg_desktop={homeData.baner.bg_desktop}
   />
 

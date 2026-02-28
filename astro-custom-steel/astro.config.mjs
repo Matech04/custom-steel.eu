@@ -14,7 +14,7 @@ const { SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET } = loadEnv(
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'static',
+  output: 'server',
   adapter: netlify(),
   i18n: {
     locales: ['pl', 'en', 'de'],

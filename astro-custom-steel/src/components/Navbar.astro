@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { urlFor } from "../lib/SanityImageUrl";
 
 // Props przekazane z index.astro na podstawie nowego query
@@ -198,7 +197,12 @@ const getFormattedHref = (linkHref: string) => {
     <div class="languages">
       {
         langs.map((l: any) => (
-          <a id={l} href={`/${l}`} class={l === lang ? "active" : ""}>
+          <a
+            id={l}
+            data-lang={l}
+            href={`/${l}/`}
+            class={`lang-link ${l === lang ? "active" : ""}`}
+          >
             {l}
           </a>
         ))
@@ -242,6 +246,21 @@ const getFormattedHref = (linkHref: string) => {
   const openNav = document.getElementById("openNav");
   const closeNav = document.getElementById("closeNav");
   const menu = document.getElementById("menu");
+
+  // --- NOWA LOGIKA CIASTECZEK ---
+  const langLinks = document.querySelectorAll(".lang-link");
+
+  langLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const selectedLang = link.getAttribute("data-lang");
+      if (selectedLang) {
+        // Ustawiamy ciastko nf_lang na rok
+        // Path=/ jest kluczowe, aby działało na całej domenie
+        document.cookie = `nf_lang=${selectedLang}; path=/; max-age=31536000; SameSite=Lax`;
+      }
+    });
+  });
+  // ------------------------------
 
   let isOpen = false;
 
