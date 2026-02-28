@@ -8,7 +8,7 @@ const { lang } = Astro.params;
 const data = await sanityClient.fetch(
   `*[_type == "contact"][0] {
     "slug": slug[$lang],
-    "seoMeta": seoMeta[$lang]
+    "seoMeta": seoMeta
   }`,
   { lang },
 );
@@ -16,8 +16,8 @@ const data = await sanityClient.fetch(
 
 <Layout
   lang={lang}
-  title={data?.seoMeta?.title || ""}
-  description={data?.seoMeta?.description || ""}
+  title={data?.seoMeta?.title?.[lang] || ""}
+  description={data?.seoMeta?.description?.[lang] || ""}
 >
   <div class="margin margin-top"><ContactForm /></div>
 </Layout>

@@ -146,9 +146,9 @@ const button_text = data.button_text;
       class="form"
       name="contact"
       method="POST"
+      action="/success"
       data-netlify="true"
       enctype="multipart/form-data"
-      netlify
     >
       <input type="hidden" name="form-name" value="contact" />
       <p style="display: none;">
@@ -385,9 +385,12 @@ const button_text = data.button_text;
       if (btnText) btnText.innerText = translations[lang]["sending"];
 
       try {
-        const response = await fetch("/", {
+        // Jeśli są pliki, musimy użyć FormData. Jeśli nie, możemy też użyć FormData,
+        // ale Netlify wymaga, aby POST body zawierało pole 'form-name'.
+        // FormData automatycznie ustawia Content-Type na multipart/form-data z boundary.
+        const response = await fetch(form.action, {
           method: "POST",
-          body: formData, // FormData jest poprawne dla multipart/form-data
+          body: formData,
         });
 
         if (!response.ok) {

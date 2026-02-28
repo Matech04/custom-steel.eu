@@ -62,16 +62,30 @@ const { images, lang } = Astro.props;
   {
     images &&
     images.map((item: any) => {
-      // 1. Wyciągamy URL tylko jeśli image istnieje, żeby uniknąć błędu "source: null"
-      const imgUrl = item.image ? urlFor(item.image).auto("format").url() : null;
+      // 1. Wyciągamy URL tylko jeśli image istnieje
+      if (!item.image) return null;
 
-      // 2. Jeśli nie ma URL, nie renderujemy obrazka
-      if (!imgUrl) return null;
+      // 2. Generujemy zoptymalizowany URL (WebP, jakość 80)
+      const imgUrl = urlFor(item.image).format("webp").quality(80).url();
+      
+      // 3. Generujemy srcset dla responsywności (300w, 600w, 900w, 1200w)
+      const srcset = `
+        ${urlFor(item.image).width(300).format("webp").quality(80).url()} 300w,
+        ${urlFor(item.image).width(600).format("webp").quality(80).url()} 600w,
+        ${urlFor(item.image).width(900).format("webp").quality(80).url()} 900w,
+        ${urlFor(item.image).width(1200).format("webp").quality(80).url()} 1200w
+      `;
 
       return (
         <img 
           src={imgUrl} 
+          srcset={srcset}
+          sizes="(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 100vw"
           alt={item.alt || "Zdjęcie realizacji Custom-Steel"} 
+          loading="lazy"
+          decoding="async"
+          width="600"
+          height="400"
         />
       );
     })

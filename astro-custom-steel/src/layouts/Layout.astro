@@ -8,6 +8,55 @@ const { title, metaDescription, lang = "pl" } = Astro.props;
 
 // Dynamicznie budujemy URL dla tagu canonical (podmień na swoją domenę w produkcji)
 const currentUrl = Astro.url.href;
+const origin = Astro.url.origin;
+const pathname = Astro.url.pathname;
+
+// Funkcja pomocnicza do generowania linków hreflang
+// Zakładamy, że struktura URL to /{lang}/... lub / (dla default)
+// Ale tutaj routing jest zdefiniowany jako: prefixDefaultLocale: true, więc zawsze mamy /{lang}
+// Musimy podmienić segment językowy w ścieżce
+function getHreflangUrl(targetLang: string) {
+  const segments = pathname.split("/").filter(Boolean);
+  // Jeśli pierwszy segment to obecny język, podmieniamy go
+  if (segments.length > 0 && ["pl", "en", "de"].includes(segments[0])) {
+    segments[0] = targetLang;
+  } else {
+    // Jeśli nie ma segmentu językowego (np. root), dodajemy go
+    segments.unshift(targetLang);
+  }
+  return `${origin}/${segments.join("/")}`;
+}
+
+// Dane strukturalne JSON-LD (LocalBusiness)
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Custom Steel",
+  image: "https://cdn.custom-steel.eu/8712c6e9-533d-4f64-a0c8-1ed9ab0996fb.jpg",
+  "@id": "https://custom-steel.eu",
+  url: "https://custom-steel.eu",
+  telephone: "+48535044105",
+  email: "office@custom-steel.eu",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Skwierzyńska 30",
+    addressLocality: "Krzeszyce",
+    postalCode: "66-435",
+    addressCountry: "PL",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 52.58702952011626,
+    longitude: 15.006045660196573,
+  },
+  openingHoursSpecification: {
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    opens: "08:00",
+    closes: "16:00",
+  },
+  sameAs: [], // Możesz dodać linki do social mediów tutaj
+};
 
 // 1. Definiujemy zapytanie GROQ
 const navQuery = `*[_type == "navigation"][0] {
@@ -46,6 +95,13 @@ const navData = await sanityClient.fetch(navQuery, { lang });
     <meta name="description" content={metaDescription} />
 
     <link rel="canonical" href={currentUrl} />
+    <link rel="alternate" hreflang="pl" href={getHreflangUrl("pl")} />
+    <link rel="alternate" hreflang="en" href={getHreflangUrl("en")} />
+    <link rel="alternate" hreflang="de" href={getHreflangUrl("de")} />
+    <link rel="alternate" hreflang="x-default" href={getHreflangUrl("en")} />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <!-- Pamiętaj aby dodać plik apple-touch-icon.png do folderu public -->
 
     <meta property="og:site_name" content="Custom Steel" />
     <meta property="og:title" content={title} />
@@ -66,6 +122,20 @@ const navData = await sanityClient.fetch(navQuery, { lang });
       property="og:image:alt"
       content="Custom Steel - Professional steel construction and manufacturing"
     />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta
+      name="twitter:image"
+      content="https://cdn.custom-steel.eu/8712c6e9-533d-4f64-a0c8-1ed9ab0996fb.jpg"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Custom Steel - Professional steel construction and manufacturing"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
 
     <meta name="contact:phone_number" content="+48535044105" />
     <meta name="contact:email" content="office@custom-steel.eu" />
