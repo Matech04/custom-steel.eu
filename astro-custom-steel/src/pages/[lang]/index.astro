@@ -10,6 +10,7 @@ import GalleryPreview from "../../components/GalleryPreview.astro";
 import Button from "../../components/buttons/Button.astro";
 import Contact from "../../components/Contact.astro";
 import { undefined } from "astro:schema";
+import { getRelativeLocaleUrl } from "astro:i18n";
 
 export async function getStaticPaths() {
   return [
@@ -75,10 +76,25 @@ const query = `*[_type == "home"][0] {
   }
 }`;
 
+const contact = await sanityClient.fetch(
+  `*[_type == "contact"][0] {
+    "slug": slug[$lang]
+  }`,
+  { lang: currentLang },
+);
+
+const projects_site = await sanityClient.fetch(
+  `*[_type == "projects_site"][0] {
+    "slug": slug[$lang]
+  }`,
+  { lang: currentLang },
+);
+
 // Przekazujemy aktualny język do zapytania pod kluczem 'lang'
 const homeData = await sanityClient.fetch(query, { lang: currentLang });
 
 const { lang } = Astro.params;
+console.log("SLUG:", getRelativeLocaleUrl(lang, contact.slug));
 ---
 
 <Layout
@@ -99,6 +115,7 @@ const { lang } = Astro.params;
     bg_mobile={homeData.baner.bg_mobile}
     bg_tablet={homeData.baner.bg_tablet}
     bg_desktop={homeData.baner.bg_desktop}
+    href={getRelativeLocaleUrl(lang, contact.slug)}
   />
 
   <div class="margin">
@@ -120,6 +137,7 @@ const { lang } = Astro.params;
         text={homeData.projects.button}
         icon={homeData.projects.button_icon}
         size="big"
+        href={getRelativeLocaleUrl(lang, projects_site.slug)}
       />
     </Section>
 

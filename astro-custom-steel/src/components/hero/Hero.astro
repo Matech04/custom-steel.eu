@@ -14,6 +14,7 @@ const {
   bg_mobile,
   bg_tablet,
   bg_desktop,
+  href,
 } = Astro.props;
 
 const bg_mob_url = urlFor(bg_mobile).format("webp").url();
@@ -115,7 +116,7 @@ const bg_desk_url = urlFor(bg_desktop).format("webp").url();
         {description_1}
         <span style="color: var(--color-accent);">{description_2}</span>
       </p>
-      <Button text={button} icon={button_icon} />
+      <Button text={button} icon={button_icon} href={href} />
     </div>
   </div>
 </div>

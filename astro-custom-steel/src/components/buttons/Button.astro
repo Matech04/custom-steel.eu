@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components";
 import parseIcon from "../../lib/parseIcon";
 
-const { text, icon = "airplane", size } = Astro.props;
+const { text, icon = "airplane", size, href = "" } = Astro.props;
 ---
 
 <style>
@@ -42,7 +42,7 @@ const { text, icon = "airplane", size } = Astro.props;
   }
 </style>
 
-<a href={""} aria-label={""} class={size === "big" ? "big" : ""}>
+<a href={href} aria-label={""} class={size === "big" ? "big" : ""}>
   <p>{text}</p>
   <Icon name={parseIcon(icon)} />
 </a>
