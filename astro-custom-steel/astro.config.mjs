@@ -20,7 +20,8 @@ export default defineConfig({
     locales: ['pl', 'en', 'de'],
     defaultLocale: 'en',
     routing: {
-      prefixDefaultLocale: true
+      prefixDefaultLocale: true,
+      fallbackType: 'redirect'
     }
   },
   integrations: [
