@@ -12,13 +12,14 @@ export const onRequest = async ({ request, redirect }, next) => {
     if (savedLang) {
       if (savedLang === "pl") return redirect("/pl/", 302);
       if (savedLang === "de") return redirect("/de/", 302);
-      return next(); // Dla "en" zostajemy na głównej
+      if (savedLang === "en") return redirect("/en/", 302);
     }
 
     // 2. Jeśli nie ma ciastka - sprawdzamy język przeglądarki
     const acceptLanguage = request.headers.get("accept-language") || "";
     if (acceptLanguage.startsWith("pl")) return redirect("/pl/", 302);
     if (acceptLanguage.startsWith("de")) return redirect("/de/", 302);
+    if (acceptLanguage.startsWith("en")) return redirect("/en/", 302);
   }
 
   return next();
