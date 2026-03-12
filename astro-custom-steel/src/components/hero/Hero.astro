@@ -3,6 +3,8 @@ import Button from "../buttons/Button.astro";
 
 import { urlFor } from "../../lib/SanityImageUrl.ts";
 import type { SanityImageObject } from "@sanity/image-url";
+import { Icon } from "astro-icon/components";
+import parseIcon from "../../lib/parseIcon";
 
 const {
   title_1,
@@ -89,6 +91,42 @@ const bg_desk_url = urlFor(bg_desktop).format("webp").url();
   p {
     font-size: var(--base);
   }
+
+  .buttons {
+    display: flex;
+    /* Domyślnie na telefonach: pionowo */
+    flex-direction: column;
+    align-items: flex-start; /* Wyrównanie do lewej (jak tekst) */
+    gap: 2rem;
+  }
+
+  /* Na tabletach i komputerach: poziomo */
+  @media (min-width: 768px) {
+    .buttons {
+      flex-direction: row;
+      align-items: center; /* Centrowanie ikon względem wysokości buttona */
+      gap: 2rem;
+    }
+  }
+
+  .icons {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  /* Rozmiar ikon dopasowany do buttona */
+  .icons [data-icon] {
+    width: 2.8rem; /* Możesz skorygować, by idealnie pasowało do wysokości Buttona */
+    height: 2.8rem;
+    color: white;
+    transition: color 0.3s ease;
+  }
+
+  .icons a:hover [data-icon] {
+    color: var(--color-accent);
+  }
 </style>
 
 <div class="hero-container">
@@ -116,7 +154,32 @@ const bg_desk_url = urlFor(bg_desktop).format("webp").url();
         {description_1}
         <span style="color: var(--color-accent);">{description_2}</span>
       </p>
-      <Button text={button} icon={button_icon} href={href} />
+      <div class="buttons">
+        <Button text={button} icon={button_icon} href={href} />
+        <div class="icons">
+          <a href="tel:+48535811395" aria-label="Zadzwoń do nas">
+            <Icon name={parseIcon("phone")} />
+          </a>
+
+          <a
+            href="https://www.instagram.com/custom.steel_/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <Icon name={parseIcon("logo-instagram")} />
+          </a>
+
+          <a
+            href="https://wa.me/48535811395"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Napisz na WhatsApp"
+          >
+            <Icon name={"mdi:whatsapp"} />
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
